@@ -25,8 +25,6 @@ public class CodeGenerator {
         pathInfoMap.put(OutputFile.mapper, DIR + "/shop-dao/src/main/java/tech/oldhorse/shop/dao/mapper");
         pathInfoMap.put(OutputFile.xml, DIR + "/shop-dao/src/main/java/tech/oldhorse/shop/dao/mapper/xml");
 
-//        pathInfoMap.put(OutputFile.parent, "tech.oldhorse.shop");
-
 
         FastAutoGenerator.create(DB_URL, USER_NAME, PASSWORD)
                 .globalConfig(builder -> builder
@@ -41,12 +39,18 @@ public class CodeGenerator {
                         .controller("web.controller")
                         .pathInfo(pathInfoMap))
                 .strategyConfig(builder -> builder.addInclude("category", "contacts", "customer", "dict", "dict_group")
-                                .entityBuilder().superClass(BaseEntity.class).enableFileOverride()
-//                                .serviceBuilder().serviceTemplate("/templates/service.java.ftl")
-//                        .controllerBuilder().template("/templates/controller.java.ftl")
-                                .entityBuilder()
-                                .enableLombok()
+                        .entityBuilder().disableSerialVersionUID().superClass(BaseEntity.class).addIgnoreColumns("id", "tenant_id", "server_create_time", "server_update_time")
+                        .serviceBuilder().serviceTemplate("/templates/service.java").serviceImplTemplate("/templates/serviceImpl.java")
+                        .controllerBuilder().template("/templates/controller.java")
+                        .entityBuilder()
+                        .enableLombok()
                 )
+//                .injectionConfig(builder -> builder.customFile(new CustomFile.Builder()
+//                        .fileName("entityDTO.java")
+//                        .templatePath("/templates/entity.java.ftl")
+//                        .packageName("dto")
+//                        .filePath(DIR + "/shop-web/src/main/java/tech/oldhorse/shop/web/dto")
+//                        .build()))
                 .templateEngine(new FreemarkerTemplateEngine())
                 .execute();
     }

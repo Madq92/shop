@@ -1,5 +1,7 @@
 package tech.oldhorse.shop.dao.base;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,7 +12,8 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public class BaseEntity {
-
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     /**
      * 租户ID
      */
@@ -24,10 +27,10 @@ public class BaseEntity {
     /**
      * 服务器创建时间 : 服务器创建时间
      */
-    private LocalDateTime createTime;
+    private LocalDateTime serverCreateTime;
 
     /**
      * 服务器更新时间 : 服务器更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDateTime serverUpdateTime;
 }
