@@ -16,11 +16,14 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         Map<OutputFile, String> pathInfoMap = Maps.newHashMap();
+        // Web层
         pathInfoMap.put(OutputFile.controller, DIR + "/shop-web/src/main/java/tech/oldhorse/shop/web/controller");
 
+        // Service层
         pathInfoMap.put(OutputFile.service, DIR + "/shop-service/src/main/java/tech/oldhorse/shop/service");
         pathInfoMap.put(OutputFile.serviceImpl, DIR + "/shop-service/src/main/java/tech/oldhorse/shop/service/impl");
 
+        // Dao层
         pathInfoMap.put(OutputFile.entity, DIR + "/shop-dao/src/main/java/tech/oldhorse/shop/dao/entity");
         pathInfoMap.put(OutputFile.mapper, DIR + "/shop-dao/src/main/java/tech/oldhorse/shop/dao/mapper");
         pathInfoMap.put(OutputFile.xml, DIR + "/shop-dao/src/main/java/tech/oldhorse/shop/dao/mapper/xml");
@@ -38,8 +41,8 @@ public class CodeGenerator {
                         .serviceImpl("service.impl")
                         .controller("web.controller")
                         .pathInfo(pathInfoMap))
-                .strategyConfig(builder -> builder.addInclude("category", "contacts", "customer", "dict", "dict_group")
-                        .entityBuilder().disableSerialVersionUID().superClass(BaseEntity.class).addIgnoreColumns("id", "tenant_id", "server_create_time", "server_update_time")
+                .strategyConfig(builder -> builder.addInclude("user")
+                        .entityBuilder().disableSerialVersionUID().superClass(BaseEntity.class).addIgnoreColumns("id", "tenant_id", "create_time", "update_time","deleted_flag")
                         .serviceBuilder().serviceTemplate("/templates/service.java").serviceImplTemplate("/templates/serviceImpl.java")
                         .controllerBuilder().template("/templates/controller.java")
                         .entityBuilder()
