@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import tech.oldhorse.shop.service.IUserService;
+import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
-import tech.oldhorse.shop.web.User;
+import tech.oldhorse.shop.service.object.dto.UserDTO;
+import tech.oldhorse.shop.service.object.model.UserModel;
 
 import java.util.List;
 
@@ -19,16 +20,17 @@ import java.util.List;
  * @since 2025-04-21
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/admin-user")
 public class UserController {
     @Autowired
-    IUserService userService;
+    UserService userService;
 
     @RequestMapping
     @ResponseBody
     public List<UserDTO> user() {
         UserCondition condition = new UserCondition();
-        userService.listByCondition(condition);
+        List<UserModel> userModels = userService.listByCondition(condition);
+
         return null;
     }
 }

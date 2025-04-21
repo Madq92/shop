@@ -1,7 +1,7 @@
 package tech.oldhorse.shop.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import tech.oldhorse.shop.dao.entity.User;
+import tech.oldhorse.shop.dao.entity.UserDO;
 
 /**
  * <p>
@@ -11,7 +11,7 @@ import tech.oldhorse.shop.dao.entity.User;
  * @author mika
  * @since 2025-04-21
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface UserMapper extends BaseMapper<UserDO> {
 
 }
 

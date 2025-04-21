@@ -14,10 +14,6 @@ spring:
       matching-strategy: ant_path_matcher
   freemarker:
     check-template-location: false
-mybatis:
-  mapper-locations: classpath:mapper/*DAO.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
 springdoc:
   api-docs:
     enabled: true
