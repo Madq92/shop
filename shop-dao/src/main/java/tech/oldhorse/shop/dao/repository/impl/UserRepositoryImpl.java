@@ -1,10 +1,10 @@
-package tech.oldhorse.shop.dao.repository.impl;
+package tech.oldhorse.shop.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
 import tech.oldhorse.shop.dao.entity.UserDO;
 import tech.oldhorse.shop.dao.mapper.UserMapper;
-import tech.oldhorse.shop.dao.repository.UserRepository;
+import tech.oldhorse.shop.service.UserRepository;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -12,8 +12,9 @@ import tech.oldhorse.shop.dao.repository.UserRepository;
  * </p>
  *
  * @author mika
- * @since 2025-04-21
+ * @since 2025-04-23
  */
 @Service
 public class UserRepositoryImpl extends ServiceImpl<UserMapper, UserDO> implements UserRepository {
+
 }

@@ -9,7 +9,7 @@ import tech.oldhorse.shop.common.object.BaseEntity;
 import java.util.Map;
 
 public class CodeGenerator {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/shop?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/demo?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true";
     private static final String USER_NAME = "root";
     private static final String PASSWORD = "123456";
     private static final String DIR = System.getProperty("user.dir");
@@ -18,8 +18,6 @@ public class CodeGenerator {
         Map<OutputFile, String> pathInfoMap = Maps.newHashMap();
         // Web层
         pathInfoMap.put(OutputFile.controller, DIR + "/shop-web/src/main/java/tech/oldhorse/shop/web/controller");
-
-
 
         // Dao层
         pathInfoMap.put(OutputFile.serviceImpl, DIR + "/shop-dao/src/main/java/tech/oldhorse/shop/dao/repository/impl");
@@ -41,7 +39,14 @@ public class CodeGenerator {
                         .serviceImpl("service.impl")
                         .controller("web.controller")
                         .pathInfo(pathInfoMap))
-                .strategyConfig(builder -> builder.addInclude("user")
+//                .strategyConfig(builder -> builder.addInclude("oper_log")
+//                        .entityBuilder().formatFileName("%sDO").disableSerialVersionUID()
+//                        .serviceBuilder().formatServiceFileName("%sRepository").formatServiceImplFileName("%sRepositoryImpl").serviceTemplate("/templates/service.java").serviceImplTemplate("/templates/serviceImpl.java")
+//                        .controllerBuilder().template("/templates/controller.java")
+//                        .entityBuilder()
+//                        .enableLombok()
+//                )
+                .strategyConfig(builder -> builder.addInclude("config","resource","role","tenant","user")
                         .entityBuilder().formatFileName("%sDO").disableSerialVersionUID().superClass(BaseEntity.class).addIgnoreColumns("id", "tenant_id", "create_time", "update_time","deleted_flag")
                         .serviceBuilder().formatServiceFileName("%sRepository").formatServiceImplFileName("%sRepositoryImpl").serviceTemplate("/templates/service.java").serviceImplTemplate("/templates/serviceImpl.java")
                         .controllerBuilder().template("/templates/controller.java")

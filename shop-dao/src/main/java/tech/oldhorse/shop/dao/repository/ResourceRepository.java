@@ -1,16 +1,16 @@
 package tech.oldhorse.shop.service;
 
-import tech.oldhorse.shop.dao.entity.UserDO;
+import tech.oldhorse.shop.dao.entity.ResourceDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * 用户 服务类
+ * 资源表 服务类
  * </p>
  *
  * @author mika
  * @since 2025-04-23
  */
-public interface UserRepository extends IService<UserDO> {
+public interface ResourceRepository extends IService<ResourceDO> {
 
 }
