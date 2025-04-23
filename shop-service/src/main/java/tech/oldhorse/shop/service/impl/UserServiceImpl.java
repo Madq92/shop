@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.oldhorse.shop.common.object.PageData;
+import tech.oldhorse.shop.dao.entity.UserDO;
+import tech.oldhorse.shop.service.UserRepository;
 import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.convert.UserConvert;
