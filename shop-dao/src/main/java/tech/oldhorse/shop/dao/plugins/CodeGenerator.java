@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.google.common.collect.Maps;
-import tech.oldhorse.shop.dao.base.BaseEntity;
+import tech.oldhorse.shop.common.object.BaseEntity;
 
 import java.util.Map;
 

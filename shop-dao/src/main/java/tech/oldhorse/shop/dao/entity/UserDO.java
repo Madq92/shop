@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import tech.oldhorse.shop.dao.base.BaseEntity;
+import tech.oldhorse.shop.common.object.BaseEntity;
 
 /**
  * <p>

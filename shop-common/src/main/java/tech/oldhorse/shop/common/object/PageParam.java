@@ -1,6 +1,5 @@
 package tech.oldhorse.shop.common.object;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Getter;
 
@@ -63,7 +62,7 @@ public class PageParam {
         this.count = count;
     }
 
-    public <T> Page<T> getPage(){
+    public <T> Page<T> getPage() {
         return new Page<T>(pageNum, pageSize, count);
     }
 }
