@@ -7,4 +7,12 @@ import tech.oldhorse.shop.common.object.PageParam;
 public class UserCondition extends PageParam {
     private String tenantId;
     private String nameLike;
+
+    public UserCondition() {
+
+    }
+
+    public UserCondition(Integer pageNum, Integer pageSize) {
+        super(pageNum, pageSize);
+    }
 }

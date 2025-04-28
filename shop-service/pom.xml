@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>tech.oldhorse</groupId>
-            <artifactId>shop-bean</artifactId>
+            <artifactId>shop-integration</artifactId>
         </dependency>
     </dependencies>
 </project>

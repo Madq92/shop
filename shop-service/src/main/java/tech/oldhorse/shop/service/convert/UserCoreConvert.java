@@ -7,6 +7,6 @@ import tech.oldhorse.shop.dao.entity.UserDO;
 import tech.oldhorse.shop.service.object.model.UserModel;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface UserConvert extends BaseCoreConvert<UserModel, UserDO> {
+public interface UserCoreConvert extends BaseCoreConvert<UserModel, UserDO> {
 
 }

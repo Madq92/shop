@@ -28,7 +28,6 @@
         <module>shop-dao</module>
         <module>shop-integration</module>
         <module>shop-common</module>
-        <module>shop-bean</module>
     </modules>
 
     <dependencies>

@@ -10,7 +10,7 @@ import tech.oldhorse.shop.dao.entity.UserDO;
 import tech.oldhorse.shop.service.UserRepository;
 import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
-import tech.oldhorse.shop.service.convert.UserConvert;
+import tech.oldhorse.shop.service.convert.UserCoreConvert;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
 import tech.oldhorse.shop.service.object.model.UserModel;
 
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    UserConvert userConvert;
+    UserCoreConvert userCoreConvert;
 
     @Override
     public String create(UserModel userModel) {
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         userModel.setUserId(userId);
         userModel.setStatus(UserStatusEnum.ENABLE.name());
 
-        userRepository.save(userConvert.model2Do(userModel));
+        userRepository.save(userCoreConvert.model2Do(userModel));
         return userId;
     }
 
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         UserModel byUserId = getByUserId(userModel.getUserId());
 
 
-        return userRepository.updateById(userConvert.model2Do(userModel));
+        return userRepository.updateById(userCoreConvert.model2Do(userModel));
     }
 
     @Override
@@ -50,19 +50,19 @@ public class UserServiceImpl implements UserService {
     public UserModel getByUserId(String userId) {
         LambdaQueryChainWrapper<UserDO> query = userRepository.lambdaQuery().eq(UserDO::getUserId, userId).eq(UserDO::getDeletedFlag, false);
         UserDO one = userRepository.getOne(query);
-        return userConvert.do2Model(one);
+        return userCoreConvert.do2Model(one);
     }
 
     @Override
     public PageData<UserModel> pageByCondition(UserCondition condition) {
         Page<UserDO> page = buildLambdaQuery(condition).page(condition.getPage());
-        return PageData.convertFrom(page, userConvert::do2Model);
+        return PageData.convertFrom(page, userCoreConvert::do2Model);
     }
 
     @Override
     public List<UserModel> listByCondition(UserCondition condition) {
         List<UserDO> list = buildLambdaQuery(condition).list();
-        return userConvert.doList2ModelList(list);
+        return userCoreConvert.doList2ModelList(list);
     }
 
     private LambdaQueryChainWrapper<UserDO> buildLambdaQuery(UserCondition condition) {

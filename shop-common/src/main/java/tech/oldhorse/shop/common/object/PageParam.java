@@ -25,6 +25,15 @@ public class PageParam {
      */
     private Boolean count = true;
 
+    public PageParam() {
+
+    }
+
+    public PageParam(Integer pageNum, Integer pageSize) {
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+    }
+
     /**
      * 设置当前分页页号。
      *

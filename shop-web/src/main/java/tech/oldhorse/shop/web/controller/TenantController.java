@@ -1,19 +1,19 @@
 package tech.oldhorse.shop.web.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.stereotype.Controller;
 
 /**
-* <p>
-    * 租户 前端控制器
-    * </p>
-*
-* @author mika
-* @since 2025-04-23
-*/
-    @Controller
+ * <p>
+ * 租户 前端控制器
+ * </p>
+ *
+ * @author mika
+ * @since 2025-04-23
+ */
+@Controller
 @RequestMapping("/tenantDO")
-    public class TenantController {
+public class TenantController {
 
 }
 
