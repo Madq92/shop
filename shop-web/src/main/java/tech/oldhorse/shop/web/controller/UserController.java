@@ -28,7 +28,7 @@ public class UserController {
     UserConvert userConvert;
 
     @GetMapping
-    public Result<PageData<UserDTO>> page(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+    public Result<PageData<UserDTO>> page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         UserCondition condition = new UserCondition(pageNum, pageSize);
         PageData<UserModel> page = userService.pageByCondition(condition);
         return Result.success(PageUtil.makeResponse(page, userConvert::model2Dto));

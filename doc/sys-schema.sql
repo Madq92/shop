@@ -123,7 +123,7 @@ CREATE TABLE `user`
     `name`            varchar(128) NOT NULL COMMENT '用户名称',
     `email`           varchar(50)           DEFAULT '' COMMENT '用户邮箱',
     `phonenumber`     varchar(11)           DEFAULT '' COMMENT '手机号码',
-    `sex`             char(1)               DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
+    `sex`             char(1)               DEFAULT NULL COMMENT '用户性别（0男 1女 2未知）',
     `avatar`          varchar(100)          DEFAULT '' COMMENT '头像路径',
     `password`        varchar(50)           DEFAULT '' COMMENT '密码',
     `salt`            varchar(20)           DEFAULT '' COMMENT '盐加密',

@@ -1,10 +1,10 @@
-package tech.oldhorse.shop.service.impl;
+package tech.oldhorse.shop.dao.repository.impl;
 
 import tech.oldhorse.shop.dao.entity.UserDO;
 import tech.oldhorse.shop.dao.mapper.UserMapper;
-import tech.oldhorse.shop.service.UserRepository;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import tech.oldhorse.shop.dao.repository.UserRepository;
 
 /**
  * <p>

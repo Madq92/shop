@@ -1,4 +1,4 @@
-package tech.oldhorse.shop.service;
+package tech.oldhorse.shop.dao.repository;
 
 import tech.oldhorse.shop.dao.entity.ConfigDO;
 import com.baomidou.mybatisplus.extension.service.IService;

@@ -1,9 +1,11 @@
 package tech.oldhorse.shop.service.object.model;
 
 import lombok.Data;
+import tech.oldhorse.shop.common.object.BaseModel;
+import tech.oldhorse.shop.service.enums.UserStatusEnum;
 
 @Data
-public class UserModel {
+public class UserModel extends BaseModel {
     /**
      * 用户ID
      */
@@ -17,5 +19,5 @@ public class UserModel {
     /**
      * 状态
      */
-    private String status;
+    private UserStatusEnum status;
 }

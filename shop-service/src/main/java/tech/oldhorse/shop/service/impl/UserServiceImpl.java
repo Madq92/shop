@@ -2,12 +2,14 @@ package tech.oldhorse.shop.service.impl;
 
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.oldhorse.shop.common.object.PageData;
 import tech.oldhorse.shop.dao.entity.UserDO;
-import tech.oldhorse.shop.service.UserRepository;
+import tech.oldhorse.shop.dao.repository.UserRepository;
+import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
 import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.convert.UserCoreConvert;
@@ -16,29 +18,33 @@ import tech.oldhorse.shop.service.object.model.UserModel;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
     @Autowired
     UserCoreConvert userCoreConvert;
+    @Autowired
+    IdGeneratorWrapper idGeneratorWrapper;
 
     @Override
     public String create(UserModel userModel) {
-        String userId = "123";
+        String userId = idGeneratorWrapper.nextStringId();
         userModel.setUserId(userId);
-        userModel.setStatus(UserStatusEnum.ENABLE.name());
-
+        userModel.setStatus(UserStatusEnum.ENABLE);
         userRepository.save(userCoreConvert.model2Do(userModel));
         return userId;
     }
 
     @Override
     public Boolean edit(UserModel userModel) {
-        UserModel byUserId = getByUserId(userModel.getUserId());
+        UserModel userInDb = getByUserId(userModel.getUserId());
 
+        userInDb.setName(userModel.getName());
+        userInDb.setStatus(userModel.getStatus());
 
-        return userRepository.updateById(userCoreConvert.model2Do(userModel));
+        return userRepository.updateById(userCoreConvert.model2Do(userInDb));
     }
 
     @Override
@@ -48,8 +54,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel getByUserId(String userId) {
-        LambdaQueryChainWrapper<UserDO> query = userRepository.lambdaQuery().eq(UserDO::getUserId, userId).eq(UserDO::getDeletedFlag, false);
-        UserDO one = userRepository.getOne(query);
+        UserDO one = userRepository.lambdaQuery()
+                .eq(UserDO::getUserId, userId)
+                .eq(UserDO::getDeletedFlag, false)
+                .one();
+
         return userCoreConvert.do2Model(one);
     }
 

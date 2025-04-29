@@ -19,3 +19,5 @@ springdoc:
     enabled: true
 #    dev-url: http://localhost:8081
 #    prod-url: http://localhost:8081
+common-sequence:
+  snowflakeWorkNode: 1
