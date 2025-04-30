@@ -31,6 +31,7 @@ public class UserController {
     @Autowired
     UserConvert userConvert;
 
+    @Operation(summary = "用户列表")
     @GetMapping
     public Result<PageData<UserDTO>> page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         UserCondition condition = new UserCondition(pageNum, pageSize);
@@ -38,55 +39,62 @@ public class UserController {
         return Result.success(PageUtil.makeResponse(page, userConvert::model2Dto));
     }
 
+    @Operation(summary = "用户详情")
     @GetMapping("/{userId}")
     public Result<UserDTO> detail(@PathVariable("userId") String userId) {
         UserModel userModel = userService.getByUserId(userId);
         return Result.success(userModel, userConvert::model2Dto);
     }
 
+    @Operation(summary = "用户创建")
     @PostMapping
     public Result<String> create(@RequestBody UserDTO userDTO) {
         String userId = userService.create(userConvert.dto2Model(userDTO));
         return Result.success(userId);
     }
 
+    @Operation(summary = "用户编辑")
     @PutMapping("/{userId}")
     public Result<Boolean> edit(@PathVariable("userId") String userId, @RequestBody UserDTO userDTO) {
         userDTO.setUserId(userId);
         return Result.success(userService.edit(userConvert.dto2Model(userDTO)));
     }
 
-//    @PostMapping("/{userId}/update-password")
-//    public Result<Boolean> updatePassword(@PathVariable("userId") String userId, @RequestBody UserUpdatePasswordReq req) {
-//        return Result.success(userService.updatePassword(userId, req));
-//    }
-//
-//
-//    @DeleteMapping("/{userId}")
-//    public Result<Boolean> delete(@PathVariable("userId") String userId) {
-//        return Result.success(userService.delete(userId));
-//    }
-//
-//    @GetMapping("/{userId}/current-login-info")
-//    public Result<UserLoginInfoResp> loginInfo(@PathVariable("userId") String userId) {
-//        return Result.success(userService.loginInfo(userId));
-//    }
-//
-//    @GetMapping("/{userId}/resource")
-//    public Result<Boolean> resource(@PathVariable("userId") String userId) {
-//        return Result.success(userService.delete(userId));
-//    }
+    @Operation(summary = "用户删除")
+    @DeleteMapping("/{userId}")
+    public Result<Boolean> delete(@PathVariable("userId") String userId) {
+        return Result.success(userService.delete(userId));
+    }
 
+    @Operation(summary = "用户更新密码")
+    @PostMapping("/{userId}/update-password")
+    public Result<Boolean> updatePassword(@PathVariable("userId") String userId, @RequestBody UserUpdatePasswordReq req) {
+        return Result.success(userService.updatePassword(userId, req));
+    }
 
-//    @PostMapping("/login")
-//    public Result<UserLoginInfoResp> login(@RequestBody UserLoginReq req) {
-//        return Result.success(userService.login(req));
-//    }
-//
-//    @PostMapping("/logout")
-//    public Result<Boolean> logout() {
-//        String userId = "123";
-//        return Result.success(userService.logout(userId));
-//    }
+    @Operation(summary = "用户登录信息")
+    @GetMapping("/{userId}/current-login-info")
+    public Result<UserLoginInfoResp> loginInfo(@PathVariable("userId") String userId) {
+        return Result.success(userService.loginInfo(userId));
+    }
+
+    @Operation(summary = "用户资源")
+    @GetMapping("/{userId}/resource")
+    public Result<Boolean> resource(@PathVariable("userId") String userId) {
+        return Result.success(userService.delete(userId));
+    }
+
+    @Operation(summary = "用户登录")
+    @PostMapping("/login")
+    public Result<UserLoginInfoResp> login(@RequestBody UserLoginReq req) {
+        return Result.success(userService.login(req));
+    }
+
+    @Operation(summary = "用户登出")
+    @PostMapping("/logout")
+    public Result<Boolean> logout() {
+        String userId = "123";
+        return Result.success(userService.logout(userId));
+    }
 }
 

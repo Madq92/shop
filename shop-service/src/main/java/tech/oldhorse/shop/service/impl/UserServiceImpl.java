@@ -29,11 +29,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserCoreConvert userCoreConvert;
     @Autowired
-    IdGeneratorWrapper idGeneratorWrapper;
+    IdGeneratorWrapper idGenerator;
 
     @Override
     public String create(UserModel userModel) {
-        String userId = idGeneratorWrapper.nextStringId();
+        String userId = idGenerator.nextStringId();
         userModel.setUserId(userId);
         userModel.setStatus(UserStatusEnum.ENABLE);
         userRepository.save(userCoreConvert.model2Do(userModel));

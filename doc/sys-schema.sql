@@ -50,7 +50,7 @@ CREATE TABLE `resource`
 (
     `id`                 int          NOT NULL AUTO_INCREMENT COMMENT '主键',
     `resource_id`        varchar(32)  NOT NULL COMMENT '资源ID',
-    `resource_name`      varchar(128) NOT NULL COMMENT '用户名称',
+    `resource_name`      varchar(128) NOT NULL COMMENT '资源名称',
     `parent_resource_id` varchar(32)           DEFAULT NULL COMMENT '父资源ID',
     `order_num`          int          NOT NULL DEFAULT '0' COMMENT '显示顺序',
     `url`                varchar(256) NOT NULL DEFAULT '#' COMMENT '请求地址',
@@ -58,7 +58,6 @@ CREATE TABLE `resource`
     `visible`            tinyint               DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
     `perms`              varchar(128)          DEFAULT NULL COMMENT '权限标识',
     `icon`               varchar(128)          DEFAULT '#' COMMENT '菜单图标',
-    `status`             varchar(32)  NOT NULL DEFAULT 'ONLINE' COMMENT '状态',
     `tenant_id`          varchar(32)  NOT NULL COMMENT '租户ID',
     `deleted_flag`       tinyint      NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     `create_time`        datetime(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '服务器创建时间',

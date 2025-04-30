@@ -1,7 +1,7 @@
 package tech.oldhorse.shop.dao.repository;
 
-import tech.oldhorse.shop.dao.entity.ResourceDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import tech.oldhorse.shop.dao.entity.ResourceDO;
 
 /**
  * <p>

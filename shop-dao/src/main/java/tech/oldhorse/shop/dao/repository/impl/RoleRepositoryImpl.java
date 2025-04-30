@@ -1,9 +1,9 @@
 package tech.oldhorse.shop.dao.repository.impl;
 
-import tech.oldhorse.shop.dao.entity.RoleDO;
-import tech.oldhorse.shop.dao.mapper.RoleMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import tech.oldhorse.shop.dao.entity.RoleDO;
+import tech.oldhorse.shop.dao.mapper.RoleMapper;
 import tech.oldhorse.shop.dao.repository.RoleRepository;
 
 /**

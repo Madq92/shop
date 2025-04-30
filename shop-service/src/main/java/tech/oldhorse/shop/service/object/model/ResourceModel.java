@@ -1,25 +1,10 @@
-package tech.oldhorse.shop.dao.entity;
+package tech.oldhorse.shop.service.object.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import tech.oldhorse.shop.common.object.BaseEntity;
+import lombok.Data;
+import tech.oldhorse.shop.common.object.BaseModel;
 
-/**
- * <p>
- * 资源表
- * </p>
- *
- * @author mika
- * @since 2025-04-23
- */
-@Getter
-@Setter
-@ToString
-@TableName("resource")
-public class ResourceDO extends BaseEntity {
-
+@Data
+public class ResourceModel extends BaseModel {
     /**
      * 资源ID
      */
