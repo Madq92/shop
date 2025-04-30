@@ -7,7 +7,6 @@ import tech.oldhorse.shop.common.object.PageParam;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class UserCondition extends PageParam {
-    private String tenantId;
     private String nameLike;
 
     public UserCondition() {
