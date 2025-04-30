@@ -15,6 +15,8 @@ import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.convert.UserCoreConvert;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
 import tech.oldhorse.shop.service.object.model.UserModel;
+import tech.oldhorse.shop.service.object.request.RoleAddResourceReq;
+import tech.oldhorse.shop.service.object.request.RoleDelResourceReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
@@ -94,6 +96,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean logout(String userId) {
+        return null;
+    }
+
+    @Override
+    public Boolean addRole(String userId, RoleAddResourceReq req) {
+        return null;
+    }
+
+    @Override
+    public Boolean delRole(String userId, RoleDelResourceReq req) {
         return null;
     }
 

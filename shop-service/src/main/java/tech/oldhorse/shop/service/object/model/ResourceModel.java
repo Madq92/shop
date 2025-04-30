@@ -36,9 +36,9 @@ public class ResourceModel extends BaseModel {
     private String resourceType;
 
     /**
-     * 菜单状态（0显示 1隐藏）
+     * 菜单状态
      */
-    private Byte visible;
+    private Boolean visible;
 
     /**
      * 权限标识

@@ -1,6 +1,7 @@
 package tech.oldhorse.shop.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.oldhorse.shop.common.object.PageData;
@@ -10,6 +11,8 @@ import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.object.dto.UserDTO;
 import tech.oldhorse.shop.service.object.model.UserModel;
+import tech.oldhorse.shop.service.object.request.RoleAddResourceReq;
+import tech.oldhorse.shop.service.object.request.RoleDelResourceReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
@@ -23,6 +26,7 @@ import tech.oldhorse.shop.web.convert.UserConvert;
  * @author mika
  * @since 2025-04-21
  */
+@Tag(name = "用户管理", description = "用户的增删改查操作，登录登出")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -31,7 +35,7 @@ public class UserController {
     @Autowired
     UserConvert userConvert;
 
-    @Operation(summary = "用户列表")
+    @Operation(summary = "用户分页")
     @GetMapping
     public Result<PageData<UserDTO>> page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         UserCondition condition = new UserCondition(pageNum, pageSize);
@@ -64,6 +68,18 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public Result<Boolean> delete(@PathVariable("userId") String userId) {
         return Result.success(userService.delete(userId));
+    }
+
+    @Operation(summary = "用户添加角色")
+    @PostMapping("/{userId}/role")
+    public Result<Boolean> addRole(@PathVariable("userId") String userId, @RequestBody RoleAddResourceReq req) {
+        return Result.success(userService.addRole(userId, req));
+    }
+
+    @Operation(summary = "角色删除资源")
+    @DeleteMapping("/{userId}/role")
+    public Result<Boolean> delRole(@PathVariable("userId") String userId, @RequestBody RoleDelResourceReq req) {
+        return Result.success(userService.delRole(userId, req));
     }
 
     @Operation(summary = "用户更新密码")

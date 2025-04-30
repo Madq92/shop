@@ -11,6 +11,7 @@ import tech.oldhorse.shop.service.convert.ResourceCoreConvert;
 import tech.oldhorse.shop.service.object.model.ResourceModel;
 
 import java.util.List;
+
 @Slf4j
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -19,7 +20,8 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     ResourceCoreConvert resourceCoreConvert;
     @Autowired
-    IdGeneratorWrapper idGeneratorWrapper;
+    IdGeneratorWrapper idGenerator;
+
     @Override
     public String create(ResourceModel resourceModel) {
         return "";

@@ -5,6 +5,7 @@ import tech.oldhorse.shop.common.object.BaseModel;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UserModel extends BaseModel {
@@ -68,4 +69,14 @@ public class UserModel extends BaseModel {
      * 状态
      */
     private UserStatusEnum status;
+
+    /**
+     * 用户角色
+     */
+    private List<RoleModel> roles;
+
+    /**
+     * 用户所有资源
+     */
+    private List<ResourceModel> resources;
 }

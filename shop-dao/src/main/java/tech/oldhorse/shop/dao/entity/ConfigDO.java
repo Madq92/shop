@@ -44,9 +44,4 @@ public class ConfigDO extends BaseEntity {
      * 配置类型（SYS 系统参数）
      */
     private String configType;
-
-    /**
-     * 状态
-     */
-    private String status;
 }

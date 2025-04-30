@@ -1,10 +1,10 @@
 package tech.oldhorse.shop.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.oldhorse.shop.common.object.Result;
-import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
 import tech.oldhorse.shop.service.ResourceService;
 import tech.oldhorse.shop.service.condition.ResourceCondition;
 import tech.oldhorse.shop.service.object.dto.ResourceDTO;
@@ -21,6 +21,7 @@ import java.util.List;
  * @author mika
  * @since 2025-04-23
  */
+@Tag(name = "资源管理", description = "资源的增删改查操作")
 @RestController
 @RequestMapping("/resource")
 public class ResourceController {
@@ -28,9 +29,7 @@ public class ResourceController {
     ResourceService resourceService;
     @Autowired
     ResourceConvert resourceConvert;
-    @Autowired
-    IdGeneratorWrapper idGenerator;
-    
+
     @Operation(summary = "资源列表")
     @GetMapping
     public Result<List<ResourceDTO>> list() {
