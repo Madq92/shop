@@ -3,8 +3,8 @@ package tech.oldhorse.shop.service;
 import tech.oldhorse.shop.common.object.PageData;
 import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.object.model.UserModel;
-import tech.oldhorse.shop.service.object.request.RoleAddResourceReq;
-import tech.oldhorse.shop.service.object.request.RoleDelResourceReq;
+import tech.oldhorse.shop.service.object.request.UserAddRoleReq;
+import tech.oldhorse.shop.service.object.request.UserDelRoleReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
@@ -32,7 +32,7 @@ public interface UserService {
 
     Boolean logout(String userId);
 
-    Boolean addRole(String userId, RoleAddResourceReq req);
+    Boolean addRole(String userId, UserAddRoleReq req);
 
-    Boolean delRole(String userId, RoleDelResourceReq req);
+    Boolean delRole(String userId, UserDelRoleReq req);
 }

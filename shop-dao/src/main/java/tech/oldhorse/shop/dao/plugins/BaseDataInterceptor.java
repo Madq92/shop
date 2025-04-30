@@ -20,13 +20,20 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 
 /**
  * BaseEntity数据设置
  */
 @Intercepts({@Signature(method = "prepare", type = StatementHandler.class, args = {Connection.class, Integer.class})})
 public class BaseDataInterceptor implements Interceptor {
+
+    public static <T> T realTarget(Object target) {
+        if (Proxy.isProxyClass(target.getClass())) {
+            MetaObject metaObject = SystemMetaObject.forObject(target);
+            return realTarget(metaObject.getValue("h.target"));
+        }
+        return (T) target;
+    }
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -46,8 +53,7 @@ public class BaseDataInterceptor implements Interceptor {
         }
         Object obj = boundSql.getParameterObject();
 
-        if (obj instanceof BaseEntity) {
-            BaseEntity baseEntity = (BaseEntity) obj;
+        if (obj instanceof BaseEntity baseEntity) {
             buildOperatorInfo(baseEntity, insertOps);
         } else if (obj instanceof StrictMap) {
             HashMap hashMap = (HashMap) obj;
@@ -55,8 +61,7 @@ public class BaseDataInterceptor implements Interceptor {
 
             if (!CollectionUtils.isEmpty(list)) {
                 list.stream().filter(Objects::nonNull).forEach(e -> {
-                    if (e instanceof BaseEntity) {
-                        BaseEntity bEntity = (BaseEntity) e;
+                    if (e instanceof BaseEntity bEntity) {
                         buildOperatorInfo(bEntity, insertOps);
                     }
                 });
@@ -67,23 +72,5 @@ public class BaseDataInterceptor implements Interceptor {
 
     private void buildOperatorInfo(BaseEntity baseEntity, boolean insertOps) {
         baseEntity.setTenantId("100");
-//        if (insertOps){
-//            baseEntity.setCreateTime(LocalDateTime.now());
-//        } else {
-//            baseEntity.setUpdateTime(LocalDateTime.now());
-//        }
-    }
-
-
-    @Override
-    public void setProperties(Properties properties) {
-    }
-
-    public static <T> T realTarget(Object target) {
-        if (Proxy.isProxyClass(target.getClass())) {
-            MetaObject metaObject = SystemMetaObject.forObject(target);
-            return realTarget(metaObject.getValue("h.target"));
-        }
-        return (T) target;
     }
 }

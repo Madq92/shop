@@ -3,25 +3,33 @@ package tech.oldhorse.shop.service.impl;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.oldhorse.shop.common.object.PageData;
+import tech.oldhorse.shop.common.utils.AssertUtils;
 import tech.oldhorse.shop.dao.entity.UserDO;
+import tech.oldhorse.shop.dao.entity.UserRoleDO;
 import tech.oldhorse.shop.dao.repository.UserRepository;
 import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
+import tech.oldhorse.shop.service.RoleService;
+import tech.oldhorse.shop.service.UserRoleRepository;
 import tech.oldhorse.shop.service.UserService;
+import tech.oldhorse.shop.service.condition.RoleCondition;
 import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.convert.UserCoreConvert;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
+import tech.oldhorse.shop.service.object.model.RoleModel;
 import tech.oldhorse.shop.service.object.model.UserModel;
-import tech.oldhorse.shop.service.object.request.RoleAddResourceReq;
-import tech.oldhorse.shop.service.object.request.RoleDelResourceReq;
+import tech.oldhorse.shop.service.object.request.UserAddRoleReq;
+import tech.oldhorse.shop.service.object.request.UserDelRoleReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,12 +40,18 @@ public class UserServiceImpl implements UserService {
     UserCoreConvert userCoreConvert;
     @Autowired
     IdGeneratorWrapper idGenerator;
+    @Autowired
+    UserRoleRepository userRoleRepository;
+
+    @Autowired
+    RoleService roleService;
 
     @Override
     public String create(UserModel userModel) {
         String userId = idGenerator.nextStringId();
         userModel.setUserId(userId);
         userModel.setStatus(UserStatusEnum.ENABLE);
+
         userRepository.save(userCoreConvert.model2Do(userModel));
         return userId;
     }
@@ -45,6 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean edit(UserModel userModel) {
         UserModel userInDb = getByUserId(userModel.getUserId());
+        AssertUtils.notNull(userInDb);
 
         UserDO userDO = userCoreConvert.model2Do(userModel);
         userDO.setId(userInDb.getId());
@@ -53,7 +68,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean delete(String userId) {
-        return userRepository.lambdaUpdate().eq(UserDO::getUserId, userId).set(UserDO::getDeletedFlag, true).update();
+        UserModel userInDb = getByUserId(userId);
+        AssertUtils.notNull(userInDb);
+
+        UserDO userDO = new UserDO();
+        userDO.setId(userInDb.getId());
+        userDO.setDeletedFlag(true);
+        return userRepository.updateById(userDO);
     }
 
     @Override
@@ -62,6 +83,7 @@ public class UserServiceImpl implements UserService {
                 .eq(UserDO::getUserId, userId)
                 .eq(UserDO::getDeletedFlag, false)
                 .one();
+        AssertUtils.notNull(one);
 
         return userCoreConvert.do2Model(one);
     }
@@ -99,13 +121,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean addRole(String userId, RoleAddResourceReq req) {
-        return null;
+    public Boolean addRole(String userId, UserAddRoleReq req) {
+        UserModel user = getByUserId(userId);
+        AssertUtils.notNull(user, "用户不存在");
+
+        RoleCondition roleCondition = new RoleCondition();
+        roleCondition.setRoleIds(req.getRoleIds());
+        List<RoleModel> roleModels = roleService.listByCondition(roleCondition);
+        AssertUtils.notNull(roleModels, "角色不存在");
+
+        List<UserRoleDO> list = roleModels.stream().map(roleModel -> new UserRoleDO(userId, roleModel.getRoleId())).toList();
+        return userRoleRepository.saveBatch(list);
     }
 
     @Override
-    public Boolean delRole(String userId, RoleDelResourceReq req) {
-        return null;
+    public Boolean delRole(String userId, UserDelRoleReq req) {
+        List<UserRoleDO> list = userRoleRepository.lambdaQuery().eq(UserRoleDO::getUserId, userId).in(UserRoleDO::getRoleId, req.getRoleIds()).list();
+        if (CollectionUtils.isEmpty(list)) {
+            return true;
+        }
+        return userRoleRepository.removeBatchByIds(list.stream().map(UserRoleDO::getId).collect(Collectors.toList()));
     }
 
     private LambdaQueryChainWrapper<UserDO> buildLambdaQuery(UserCondition condition) {

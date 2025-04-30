@@ -11,8 +11,8 @@ import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.object.dto.UserDTO;
 import tech.oldhorse.shop.service.object.model.UserModel;
-import tech.oldhorse.shop.service.object.request.RoleAddResourceReq;
-import tech.oldhorse.shop.service.object.request.RoleDelResourceReq;
+import tech.oldhorse.shop.service.object.request.UserAddRoleReq;
+import tech.oldhorse.shop.service.object.request.UserDelRoleReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
@@ -72,13 +72,13 @@ public class UserController {
 
     @Operation(summary = "用户添加角色")
     @PostMapping("/{userId}/role")
-    public Result<Boolean> addRole(@PathVariable("userId") String userId, @RequestBody RoleAddResourceReq req) {
+    public Result<Boolean> addRole(@PathVariable("userId") String userId, @RequestBody UserAddRoleReq req) {
         return Result.success(userService.addRole(userId, req));
     }
 
     @Operation(summary = "角色删除资源")
     @DeleteMapping("/{userId}/role")
-    public Result<Boolean> delRole(@PathVariable("userId") String userId, @RequestBody RoleDelResourceReq req) {
+    public Result<Boolean> delRole(@PathVariable("userId") String userId, @RequestBody UserDelRoleReq req) {
         return Result.success(userService.delRole(userId, req));
     }
 

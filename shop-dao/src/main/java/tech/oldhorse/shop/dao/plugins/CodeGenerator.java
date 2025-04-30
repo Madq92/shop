@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.google.common.collect.Maps;
-import tech.oldhorse.shop.common.object.BaseEntity;
 
 import java.util.Map;
 
@@ -46,13 +45,21 @@ public class CodeGenerator {
 //                        .entityBuilder()
 //                        .enableLombok()
 //                )
-                .strategyConfig(builder -> builder.addInclude("config","resource","role","tenant","user")
-                        .entityBuilder().formatFileName("%sDO").disableSerialVersionUID().superClass(BaseEntity.class).addIgnoreColumns("id", "tenant_id", "create_time", "update_time","deleted_flag")
+                .strategyConfig(builder -> builder.addInclude("user_role", "role_resource")
+                        .entityBuilder().formatFileName("%sDO").disableSerialVersionUID()
                         .serviceBuilder().formatServiceFileName("%sRepository").formatServiceImplFileName("%sRepositoryImpl").serviceTemplate("/templates/service.java").serviceImplTemplate("/templates/serviceImpl.java")
                         .controllerBuilder().template("/templates/controller.java")
                         .entityBuilder()
                         .enableLombok()
                 )
+//                .strategyConfig(builder -> builder.addInclude("config","resource","role","tenant","user")
+//                        .entityBuilder().formatFileName("%sDO").disableSerialVersionUID().superClass(BaseEntity.class).addIgnoreColumns("id", "tenant_id", "create_time", "update_time","deleted_flag")
+//                        .serviceBuilder().formatServiceFileName("%sRepository").formatServiceImplFileName("%sRepositoryImpl").serviceTemplate("/templates/service.java").serviceImplTemplate("/templates/serviceImpl.java")
+//                        .controllerBuilder().template("/templates/controller.java")
+//                        .entityBuilder()
+//                        .enableLombok()
+//                )
+
 //                .injectionConfig(builder -> builder.customFile(new CustomFile.Builder()
 //                        .fileName("entityDTO.java")
 //                        .templatePath("/templates/entity.java.ftl")
