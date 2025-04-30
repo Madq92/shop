@@ -1,7 +1,9 @@
 package tech.oldhorse.shop.web.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -11,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author mika
  * @since 2025-04-23
  */
-@Controller
-@RequestMapping("/tenantDO")
+@Hidden
+@RestController
+@RequestMapping("/tenant")
 public class TenantController {
 
 }

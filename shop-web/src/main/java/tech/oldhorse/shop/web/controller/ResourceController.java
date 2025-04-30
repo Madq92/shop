@@ -1,19 +1,22 @@
 package tech.oldhorse.shop.web.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
-* <p>
-    * 资源表 前端控制器
-    * </p>
-*
-* @author mika
-* @since 2025-04-23
-*/
-    @Controller
-@RequestMapping("/resourceDO")
-    public class ResourceController {
+ * <p>
+ * 资源表 前端控制器
+ * </p>
+ *
+ * @author mika
+ * @since 2025-04-23
+ */
+@Hidden
+@RestController
+@RequestMapping("/resource")
+public class ResourceController {
 
 }
 

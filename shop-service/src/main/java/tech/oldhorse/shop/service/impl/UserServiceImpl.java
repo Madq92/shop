@@ -15,6 +15,9 @@ import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.convert.UserCoreConvert;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
 import tech.oldhorse.shop.service.object.model.UserModel;
+import tech.oldhorse.shop.service.object.request.UserLoginReq;
+import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
+import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
 
 import java.util.List;
 
@@ -72,6 +75,26 @@ public class UserServiceImpl implements UserService {
     public List<UserModel> listByCondition(UserCondition condition) {
         List<UserDO> list = buildLambdaQuery(condition).list();
         return userCoreConvert.doList2ModelList(list);
+    }
+
+    @Override
+    public Boolean updatePassword(String userId, UserUpdatePasswordReq req) {
+        return null;
+    }
+
+    @Override
+    public UserLoginInfoResp loginInfo(String userId) {
+        return null;
+    }
+
+    @Override
+    public UserLoginInfoResp login(UserLoginReq req) {
+        return null;
+    }
+
+    @Override
+    public Boolean logout(String userId) {
+        return null;
     }
 
     private LambdaQueryChainWrapper<UserDO> buildLambdaQuery(UserCondition condition) {
