@@ -46,9 +46,8 @@ public class UserServiceImpl implements UserService {
     public Boolean edit(UserModel userModel) {
         UserModel userInDb = getByUserId(userModel.getUserId());
 
-        userInDb.setName(userModel.getName());
-        userInDb.setStatus(userModel.getStatus());
-
+        UserDO userDO = userCoreConvert.model2Do(userModel);
+        userDO.setId(userInDb.getId());
         return userRepository.updateById(userCoreConvert.model2Do(userInDb));
     }
 

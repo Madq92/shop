@@ -7,7 +7,7 @@ import tech.oldhorse.shop.service.object.model.OperLogModel;
 public interface OperLogService {
     PageData<OperLogModel> pageByCondition(OperLogCondition condition);
 
-    OperLogModel getByLogId(String logId);
+    OperLogModel getByLogId(Long logId);
 
     Boolean create(OperLogModel operLogModel);
 }

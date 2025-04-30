@@ -1,9 +1,11 @@
 package tech.oldhorse.shop.service.object.model;
 
+import lombok.Data;
 import tech.oldhorse.shop.common.object.BaseModel;
 
 import java.util.List;
 
+@Data
 public class RoleModel extends BaseModel {
     /**
      * 角色ID

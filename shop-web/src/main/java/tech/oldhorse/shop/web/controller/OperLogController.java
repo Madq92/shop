@@ -44,7 +44,7 @@ public class OperLogController {
 
     @Operation(summary = "操作日志详情")
     @GetMapping("/{logId}")
-    public Result<OperLogDTO> detail(@PathVariable("logId") String logId) {
+    public Result<OperLogDTO> detail(@PathVariable("logId") Long logId) {
         OperLogModel operLogModel = operLogService.getByLogId(logId);
         return Result.success(operLogModel, operLogConvert::model2Dto);
     }
