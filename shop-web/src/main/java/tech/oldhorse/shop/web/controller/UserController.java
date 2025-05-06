@@ -4,19 +4,28 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tech.oldhorse.shop.common.context.WebContextHolder;
 import tech.oldhorse.shop.common.object.PageData;
 import tech.oldhorse.shop.common.object.Result;
 import tech.oldhorse.shop.common.utils.PageUtil;
 import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
+import tech.oldhorse.shop.service.object.dto.ResourceDTO;
+import tech.oldhorse.shop.service.object.dto.RoleDTO;
 import tech.oldhorse.shop.service.object.dto.UserDTO;
+import tech.oldhorse.shop.service.object.model.ResourceModel;
+import tech.oldhorse.shop.service.object.model.RoleModel;
 import tech.oldhorse.shop.service.object.model.UserModel;
 import tech.oldhorse.shop.service.object.request.UserAddRoleReq;
 import tech.oldhorse.shop.service.object.request.UserDelRoleReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
+import tech.oldhorse.shop.web.convert.ResourceConvert;
+import tech.oldhorse.shop.web.convert.RoleConvert;
 import tech.oldhorse.shop.web.convert.UserConvert;
+
+import java.util.List;
 
 /**
  * <p>
@@ -34,6 +43,11 @@ public class UserController {
     UserService userService;
     @Autowired
     UserConvert userConvert;
+    @Autowired
+    ResourceConvert resourceConvert;
+    @Autowired
+    RoleConvert roleConvert;
+
 
     @Operation(summary = "用户分页")
     @GetMapping
@@ -88,16 +102,20 @@ public class UserController {
         return Result.success(userService.updatePassword(userId, req));
     }
 
-    @Operation(summary = "用户登录信息")
-    @GetMapping("/{userId}/current-login-info")
-    public Result<UserLoginInfoResp> loginInfo(@PathVariable("userId") String userId) {
-        return Result.success(userService.loginInfo(userId));
+
+    @Operation(summary = "用户角色")
+    @GetMapping("/{userId}/role")
+    public Result<List<RoleDTO>> userRole(@PathVariable("userId") String userId) {
+        List<RoleModel> roleModels = userService.getUserRole(userId);
+        return Result.success(roleConvert.modelList2DtoList(roleModels));
     }
+
 
     @Operation(summary = "用户资源")
     @GetMapping("/{userId}/resource")
-    public Result<Boolean> resource(@PathVariable("userId") String userId) {
-        return Result.success(userService.delete(userId));
+    public Result<List<ResourceDTO>> userResource(@PathVariable("userId") String userId) {
+        List<ResourceModel> resourceModels = userService.getUserResource(userId);
+        return Result.success(resourceConvert.modelList2DtoList(resourceModels));
     }
 
     @Operation(summary = "用户登录")
@@ -109,8 +127,15 @@ public class UserController {
     @Operation(summary = "用户登出")
     @PostMapping("/logout")
     public Result<Boolean> logout() {
-        String userId = "123";
+        String userId = WebContextHolder.getUserId();
         return Result.success(userService.logout(userId));
+    }
+
+    @Operation(summary = "用户登录信息")
+    @GetMapping("/current-login-info")
+    public Result<UserLoginInfoResp> loginInfo() {
+        String userId = WebContextHolder.getUserId();
+        return Result.success(userService.loginInfo(userId));
     }
 }
 

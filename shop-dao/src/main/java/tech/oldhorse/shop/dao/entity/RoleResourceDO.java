@@ -37,6 +37,11 @@ public class RoleResourceDO {
      */
     private String resourceId;
 
+    /**
+     * 租户ID
+     */
+    private String tenantId;
+
     public RoleResourceDO(String roleId, String resourceId) {
         this.roleId = roleId;
         this.resourceId = resourceId;

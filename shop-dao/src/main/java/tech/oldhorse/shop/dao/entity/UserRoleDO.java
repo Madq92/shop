@@ -37,6 +37,11 @@ public class UserRoleDO {
      */
     private String roleId;
 
+    /**
+     * 租户ID
+     */
+    private String tenantId;
+
     public UserRoleDO(String userId, String roleId) {
         this.userId = userId;
         this.roleId = roleId;

@@ -12,14 +12,17 @@ import tech.oldhorse.shop.common.utils.AssertUtils;
 import tech.oldhorse.shop.dao.entity.UserDO;
 import tech.oldhorse.shop.dao.entity.UserRoleDO;
 import tech.oldhorse.shop.dao.repository.UserRepository;
+import tech.oldhorse.shop.dao.repository.UserRoleRepository;
 import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
+import tech.oldhorse.shop.service.ResourceService;
 import tech.oldhorse.shop.service.RoleService;
-import tech.oldhorse.shop.service.UserRoleRepository;
 import tech.oldhorse.shop.service.UserService;
+import tech.oldhorse.shop.service.condition.ResourceCondition;
 import tech.oldhorse.shop.service.condition.RoleCondition;
 import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.convert.UserCoreConvert;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
+import tech.oldhorse.shop.service.object.model.ResourceModel;
 import tech.oldhorse.shop.service.object.model.RoleModel;
 import tech.oldhorse.shop.service.object.model.UserModel;
 import tech.oldhorse.shop.service.object.request.UserAddRoleReq;
@@ -42,9 +45,10 @@ public class UserServiceImpl implements UserService {
     IdGeneratorWrapper idGenerator;
     @Autowired
     UserRoleRepository userRoleRepository;
-
     @Autowired
     RoleService roleService;
+    @Autowired
+    ResourceService resourceService;
 
     @Override
     public String create(UserModel userModel) {
@@ -63,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
         UserDO userDO = userCoreConvert.model2Do(userModel);
         userDO.setId(userInDb.getId());
-        return userRepository.updateById(userCoreConvert.model2Do(userInDb));
+        return userRepository.updateById(userDO);
     }
 
     @Override
@@ -106,6 +110,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<ResourceModel> getUserResource(String userId) {
+        // 获取用户角色
+        List<UserRoleDO> userRoleDOS = userRoleRepository.lambdaQuery().eq(UserRoleDO::getUserId, userId).list();
+        if (CollectionUtils.isEmpty(userRoleDOS)) {
+            return List.of();
+        }
+
+        // 获取角色对应得资源
+        List<String> roleIds = userRoleDOS.stream().map(UserRoleDO::getRoleId).toList();
+
+        ResourceCondition resourceCondition = new ResourceCondition();
+        resourceCondition.setResourceIds(roleIds);
+        return resourceService.listByCondition(resourceCondition);
+    }
+
+    @Override
+    public List<RoleModel> getUserRole(String userId) {
+        // 获取用户角色
+        List<UserRoleDO> userRoleDOS = userRoleRepository.lambdaQuery().eq(UserRoleDO::getUserId, userId).list();
+        if (CollectionUtils.isEmpty(userRoleDOS)) {
+            return List.of();
+        }
+
+        RoleCondition roleCondition = new RoleCondition();
+        roleCondition.setRoleIds(userRoleDOS.stream().map(UserRoleDO::getRoleId).toList());
+        return roleService.listByCondition(roleCondition);
+    }
+
+
+    @Override
     public UserLoginInfoResp loginInfo(String userId) {
         return null;
     }
@@ -146,7 +180,6 @@ public class UserServiceImpl implements UserService {
     private LambdaQueryChainWrapper<UserDO> buildLambdaQuery(UserCondition condition) {
         return userRepository.lambdaQuery()
                 .eq(UserDO::getDeletedFlag, false)
-                .eq(StringUtils.isNotBlank(condition.getTenantId()), UserDO::getTenantId, condition.getTenantId())
                 .like(StringUtils.isNotBlank(condition.getNameLike()), UserDO::getName, condition.getNameLike());
     }
 }

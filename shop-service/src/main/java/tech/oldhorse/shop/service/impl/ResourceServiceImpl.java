@@ -8,9 +8,9 @@ import tech.oldhorse.shop.common.utils.AssertUtils;
 import tech.oldhorse.shop.dao.entity.ResourceDO;
 import tech.oldhorse.shop.dao.entity.RoleResourceDO;
 import tech.oldhorse.shop.dao.repository.ResourceRepository;
+import tech.oldhorse.shop.dao.repository.RoleResourceRepository;
 import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
 import tech.oldhorse.shop.service.ResourceService;
-import tech.oldhorse.shop.service.RoleResourceRepository;
 import tech.oldhorse.shop.service.condition.ResourceCondition;
 import tech.oldhorse.shop.service.convert.ResourceCoreConvert;
 import tech.oldhorse.shop.service.object.model.ResourceModel;
@@ -20,6 +20,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class ResourceServiceImpl implements ResourceService {
+    private final static String EXIST_SQL = "SELECT 1 FROM role_resource WHERE role_resource.resource_id = resource.resource_id and role_id IN (%s)";
     @Autowired
     ResourceRepository resourceRepository;
     @Autowired
@@ -72,9 +73,14 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public List<ResourceModel> listByCondition(ResourceCondition condition) {
+        String existSql = null;
+        if (CollectionUtils.isNotEmpty(condition.getRoleIds())) {
+            existSql = String.format(EXIST_SQL, String.join(",", condition.getRoleIds()));
+        }
         List<ResourceDO> list = resourceRepository.lambdaQuery()
                 .eq(ResourceDO::getDeletedFlag, false)
                 .in(CollectionUtils.isNotEmpty(condition.getResourceIds()), ResourceDO::getResourceId, condition.getResourceIds())
+                .exists(null != existSql, existSql)
                 .list();
         return resourceCoreConvert.doList2ModelList(list);
     }

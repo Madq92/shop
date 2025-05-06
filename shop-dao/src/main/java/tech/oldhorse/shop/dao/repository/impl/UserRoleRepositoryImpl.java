@@ -2,9 +2,9 @@ package tech.oldhorse.shop.service.impl;
 
 import tech.oldhorse.shop.dao.entity.UserRoleDO;
 import tech.oldhorse.shop.dao.mapper.UserRoleMapper;
-import tech.oldhorse.shop.service.UserRoleRepository;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import tech.oldhorse.shop.dao.repository.UserRoleRepository;
 
 /**
  * <p>

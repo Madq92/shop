@@ -2,6 +2,8 @@ package tech.oldhorse.shop.service;
 
 import tech.oldhorse.shop.common.object.PageData;
 import tech.oldhorse.shop.service.condition.UserCondition;
+import tech.oldhorse.shop.service.object.model.ResourceModel;
+import tech.oldhorse.shop.service.object.model.RoleModel;
 import tech.oldhorse.shop.service.object.model.UserModel;
 import tech.oldhorse.shop.service.object.request.UserAddRoleReq;
 import tech.oldhorse.shop.service.object.request.UserDelRoleReq;
@@ -25,6 +27,10 @@ public interface UserService {
     List<UserModel> listByCondition(UserCondition condition);
 
     Boolean updatePassword(String userId, UserUpdatePasswordReq req);
+
+    List<ResourceModel> getUserResource(String userId);
+
+    List<RoleModel> getUserRole(String userId);
 
     UserLoginInfoResp loginInfo(String userId);
 
