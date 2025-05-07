@@ -1,0 +1,90 @@
+package tech.oldhorse.shop.web.interceptor;
+
+import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.exception.SaTokenException;
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.strategy.SaStrategy;
+import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.json.JSONUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+import tech.oldhorse.shop.common.constants.ErrorCodeEnum;
+import tech.oldhorse.shop.common.context.WebContext;
+import tech.oldhorse.shop.common.context.WebContextHolder;
+import tech.oldhorse.shop.common.object.Result;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+
+/**
+ * 登录用户Token验证、生成和权限验证的拦截器。
+ */
+@Slf4j
+public class AuthenticationInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
+        if (!(handler instanceof HandlerMethod)) {
+            return true;
+        }
+        Method method = ((HandlerMethod) handler).getMethod();
+        //如果没有登录则直接交给satoken注解去验证。
+        if (!StpUtil.isLogin()) {
+            // 如果此 Method 或其所属 Class 标注了 @SaIgnore，则忽略掉鉴权
+            if (BooleanUtil.isTrue(SaStrategy.instance.isAnnotationPresent.apply(method, SaIgnore.class))) {
+                return true;
+            }
+            responseError(response, HttpServletResponse.SC_UNAUTHORIZED, Result.error(ErrorCodeEnum.UNAUTHORIZED_EXCEPTION));
+            return false;
+        }
+        //对于已经登录的用户一定存在session对象。
+        SaSession session = StpUtil.getTokenSession();
+        if (session == null) {
+            responseError(response, HttpServletResponse.SC_UNAUTHORIZED, Result.error(ErrorCodeEnum.UNAUTHORIZED_EXCEPTION));
+            return false;
+        }
+
+        String userId = (String) session.getLoginId();
+        WebContext webContext = new WebContext();
+        webContext.setUserId(userId);
+        WebContextHolder.setWebContext(webContext);
+
+        try {
+            //执行基于stoken的注解鉴权。
+            SaStrategy.instance.checkMethodAnnotation.accept(method);
+        } catch (SaTokenException e) {
+            responseError(response, HttpServletResponse.SC_FORBIDDEN, Result.error(ErrorCodeEnum.NO_ACCESS_PERMISSION));
+            return false;
+        }
+        return true;
+    }
+
+    private void responseError(HttpServletResponse response, int httpStatus, Result result) throws IOException {
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setStatus(httpStatus);
+        if (result != null) {
+            out.print(JSONUtil.toJsonStr(result));
+        }
+        out.flush();
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+                           ModelAndView modelAndView) throws Exception {
+        // 这里需要空注解，否则sonar会不happy。
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+            throws Exception {
+        WebContextHolder.cleanThreadLocal();
+    }
+}

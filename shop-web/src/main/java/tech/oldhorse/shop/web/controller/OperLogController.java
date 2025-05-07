@@ -9,9 +9,9 @@ import tech.oldhorse.shop.common.object.Result;
 import tech.oldhorse.shop.common.utils.PageUtil;
 import tech.oldhorse.shop.service.OperLogService;
 import tech.oldhorse.shop.service.condition.OperLogCondition;
+import tech.oldhorse.shop.service.convert.OperLogCoreConvert;
 import tech.oldhorse.shop.service.object.dto.OperLogDTO;
 import tech.oldhorse.shop.service.object.model.OperLogModel;
-import tech.oldhorse.shop.web.convert.OperLogConvert;
 
 /**
  * <p>
@@ -30,7 +30,7 @@ public class OperLogController {
     private OperLogService operLogService;
 
     @Autowired
-    private OperLogConvert operLogConvert;
+    private OperLogCoreConvert operLogCoreConvert;
 
     @Operation(summary = "操作日志分页")
     @GetMapping
@@ -39,14 +39,14 @@ public class OperLogController {
             @RequestParam("pageSize") Integer pageSize) {
         OperLogCondition condition = new OperLogCondition(pageNum, pageSize);
         PageData<OperLogModel> page = operLogService.pageByCondition(condition);
-        return Result.success(PageUtil.makeResponse(page, operLogConvert::model2Dto));
+        return Result.success(PageUtil.makeResponse(page, operLogCoreConvert::model2Dto));
     }
 
     @Operation(summary = "操作日志详情")
     @GetMapping("/{logId}")
     public Result<OperLogDTO> detail(@PathVariable("logId") Long logId) {
         OperLogModel operLogModel = operLogService.getByLogId(logId);
-        return Result.success(operLogModel, operLogConvert::model2Dto);
+        return Result.success(operLogModel, operLogCoreConvert::model2Dto);
     }
 
 }

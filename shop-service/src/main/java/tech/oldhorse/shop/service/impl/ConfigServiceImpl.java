@@ -20,21 +20,21 @@ public class ConfigServiceImpl implements ConfigService {
     @Autowired
     ConfigRepository configRepository;
     @Autowired
-    ConfigCoreConvert configCoreConvert;
+    ConfigCoreConvert configConvert;
     @Autowired
     IdGeneratorWrapper idGenerator;
 
     @Override
     public List<ConfigModel> listByCondition(ConfigCondition condition) {
         List<ConfigDO> list = configRepository.lambdaQuery().eq(ConfigDO::getDeletedFlag, false).list();
-        return configCoreConvert.doList2ModelList(list);
+        return configConvert.doList2ModelList(list);
     }
 
     @Override
     public ConfigModel getByConfigId(String configId) {
         ConfigDO one = configRepository.lambdaQuery().eq(ConfigDO::getDeletedFlag, false).eq(ConfigDO::getConfigId, configId).one();
         AssertUtils.notNull(one);
-        return configCoreConvert.do2Model(one);
+        return configConvert.do2Model(one);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ConfigServiceImpl implements ConfigService {
         String configId = idGenerator.nextStringId();
         configModel.setConfigId(configId);
 
-        configRepository.save(configCoreConvert.model2Do(configModel));
+        configRepository.save(configConvert.model2Do(configModel));
         return configId;
     }
 
@@ -51,7 +51,7 @@ public class ConfigServiceImpl implements ConfigService {
         ConfigModel configInDb = getByConfigId(configModel.getConfigId());
         AssertUtils.notNull(configInDb);
 
-        ConfigDO configDO = configCoreConvert.model2Do(configModel);
+        ConfigDO configDO = configConvert.model2Do(configModel);
         configDO.setId(configInDb.getId());
         return configRepository.updateById(configDO);
     }

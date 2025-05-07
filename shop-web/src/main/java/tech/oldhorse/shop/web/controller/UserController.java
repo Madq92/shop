@@ -1,5 +1,6 @@
 package tech.oldhorse.shop.web.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import tech.oldhorse.shop.common.object.Result;
 import tech.oldhorse.shop.common.utils.PageUtil;
 import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
+import tech.oldhorse.shop.service.convert.ResourceCoreConvert;
+import tech.oldhorse.shop.service.convert.RoleCoreConvert;
+import tech.oldhorse.shop.service.convert.UserCoreConvert;
 import tech.oldhorse.shop.service.object.dto.ResourceDTO;
 import tech.oldhorse.shop.service.object.dto.RoleDTO;
 import tech.oldhorse.shop.service.object.dto.UserDTO;
@@ -21,9 +25,6 @@ import tech.oldhorse.shop.service.object.request.UserDelRoleReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
-import tech.oldhorse.shop.web.convert.ResourceConvert;
-import tech.oldhorse.shop.web.convert.RoleConvert;
-import tech.oldhorse.shop.web.convert.UserConvert;
 
 import java.util.List;
 
@@ -42,11 +43,11 @@ public class UserController {
     @Autowired
     UserService userService;
     @Autowired
-    UserConvert userConvert;
+    UserCoreConvert userCoreConvert;
     @Autowired
-    ResourceConvert resourceConvert;
+    ResourceCoreConvert resourceCoreConvert;
     @Autowired
-    RoleConvert roleConvert;
+    RoleCoreConvert roleCoreConvert;
 
 
     @Operation(summary = "用户分页")
@@ -54,20 +55,20 @@ public class UserController {
     public Result<PageData<UserDTO>> page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         UserCondition condition = new UserCondition(pageNum, pageSize);
         PageData<UserModel> page = userService.pageByCondition(condition);
-        return Result.success(PageUtil.makeResponse(page, userConvert::model2Dto));
+        return Result.success(PageUtil.makeResponse(page, userCoreConvert::model2Dto));
     }
 
     @Operation(summary = "用户详情")
     @GetMapping("/{userId}")
     public Result<UserDTO> detail(@PathVariable("userId") String userId) {
         UserModel userModel = userService.getByUserId(userId);
-        return Result.success(userModel, userConvert::model2Dto);
+        return Result.success(userModel, userCoreConvert::model2Dto);
     }
 
     @Operation(summary = "用户创建")
     @PostMapping
     public Result<String> create(@RequestBody UserDTO userDTO) {
-        String userId = userService.create(userConvert.dto2Model(userDTO));
+        String userId = userService.create(userCoreConvert.dto2Model(userDTO));
         return Result.success(userId);
     }
 
@@ -75,7 +76,7 @@ public class UserController {
     @PutMapping("/{userId}")
     public Result<Boolean> edit(@PathVariable("userId") String userId, @RequestBody UserDTO userDTO) {
         userDTO.setUserId(userId);
-        return Result.success(userService.edit(userConvert.dto2Model(userDTO)));
+        return Result.success(userService.edit(userCoreConvert.dto2Model(userDTO)));
     }
 
     @Operation(summary = "用户删除")
@@ -96,18 +97,11 @@ public class UserController {
         return Result.success(userService.delRole(userId, req));
     }
 
-    @Operation(summary = "用户更新密码")
-    @PostMapping("/{userId}/update-password")
-    public Result<Boolean> updatePassword(@PathVariable("userId") String userId, @RequestBody UserUpdatePasswordReq req) {
-        return Result.success(userService.updatePassword(userId, req));
-    }
-
-
     @Operation(summary = "用户角色")
     @GetMapping("/{userId}/role")
     public Result<List<RoleDTO>> userRole(@PathVariable("userId") String userId) {
         List<RoleModel> roleModels = userService.getUserRole(userId);
-        return Result.success(roleConvert.modelList2DtoList(roleModels));
+        return Result.success(roleCoreConvert.modelList2DtoList(roleModels));
     }
 
 
@@ -115,11 +109,12 @@ public class UserController {
     @GetMapping("/{userId}/resource")
     public Result<List<ResourceDTO>> userResource(@PathVariable("userId") String userId) {
         List<ResourceModel> resourceModels = userService.getUserResource(userId);
-        return Result.success(resourceConvert.modelList2DtoList(resourceModels));
+        return Result.success(resourceCoreConvert.modelList2DtoList(resourceModels));
     }
 
     @Operation(summary = "用户登录")
     @PostMapping("/login")
+    @SaIgnore
     public Result<UserLoginInfoResp> login(@RequestBody UserLoginReq req) {
         return Result.success(userService.login(req));
     }
@@ -137,5 +132,13 @@ public class UserController {
         String userId = WebContextHolder.getUserId();
         return Result.success(userService.loginInfo(userId));
     }
+
+    @Operation(summary = "用户更新密码")
+    @PostMapping("/update-password")
+    public Result<Boolean> updatePassword(@RequestBody UserUpdatePasswordReq req) {
+        String userId = WebContextHolder.getUserId();
+        return Result.success(userService.updatePassword(userId, req));
+    }
+
 }
 

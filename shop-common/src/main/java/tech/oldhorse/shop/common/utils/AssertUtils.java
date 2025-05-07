@@ -33,5 +33,11 @@ public class AssertUtils {
         }
     }
 
+    public static void isTrue(boolean expression, String message) {
+        if (!expression) {
+            throw new BaseParamException(message);
+        }
+    }
+
 
 }

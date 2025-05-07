@@ -8,6 +8,8 @@ import tech.oldhorse.shop.common.object.PageParam;
 @Data
 public class UserCondition extends PageParam {
     private String nameLike;
+    private String email;
+    private String phonenumber;
 
     public UserCondition() {
 

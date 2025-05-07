@@ -2,6 +2,7 @@ package tech.oldhorse.shop.common.object;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import tech.oldhorse.shop.common.constants.ErrorCodeEnum;
 
 import java.util.function.Function;
 
@@ -30,6 +31,16 @@ public class Result<T> {
      */
     private T data = null;
 
+    private Result() {
+    }
+
+
+    private Result(String errorCode, String errorMessage) {
+        this.success = false;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+    }
+
     /**
      * 根据参数errorCode是否为空，判断创建成功对象还是错误对象。
      * 如果返回错误对象，errorCode 和 errorMessage 分别取自于参数 errorCode 和参数 errorMessage。
@@ -41,7 +52,6 @@ public class Result<T> {
     public static Result<Void> create(String errorCode, String errorMessage) {
         return errorCode == null ? success() : error(errorCode, errorMessage);
     }
-
 
     /**
      * 创建成功对象。
@@ -77,13 +87,8 @@ public class Result<T> {
         return new Result<>(errorCode, errorMessage);
     }
 
-    private Result() {
-    }
-
-    private Result(String errorCode, String errorMessage) {
-        this.success = false;
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+    public static <T> Result<T> error(ErrorCodeEnum errorCodeEnum) {
+        return new Result<>(errorCodeEnum.name(), errorCodeEnum.getErrorMessage());
     }
 
     public static <T, M> Result<T> success(M model, Function<M, T> mapping) {

@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class UserUpdatePasswordReq {
-    @Schema(description = "用户密码")
-    private String password;
+    @Schema(description = "新密码")
+    private String newPassword;
+    @Schema(description = "旧密码")
+    private String oldPassword;
 }

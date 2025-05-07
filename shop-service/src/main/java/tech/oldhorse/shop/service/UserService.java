@@ -26,11 +26,13 @@ public interface UserService {
 
     List<UserModel> listByCondition(UserCondition condition);
 
-    Boolean updatePassword(String userId, UserUpdatePasswordReq req);
-
     List<ResourceModel> getUserResource(String userId);
 
     List<RoleModel> getUserRole(String userId);
+
+    Boolean addRole(String userId, UserAddRoleReq req);
+
+    Boolean delRole(String userId, UserDelRoleReq req);
 
     UserLoginInfoResp loginInfo(String userId);
 
@@ -38,7 +40,7 @@ public interface UserService {
 
     Boolean logout(String userId);
 
-    Boolean addRole(String userId, UserAddRoleReq req);
+    Boolean updatePassword(String userId, UserUpdatePasswordReq req);
 
-    Boolean delRole(String userId, UserDelRoleReq req);
+
 }
