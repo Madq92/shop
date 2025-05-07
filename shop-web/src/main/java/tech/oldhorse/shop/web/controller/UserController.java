@@ -1,5 +1,6 @@
 package tech.oldhorse.shop.web.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,7 +50,7 @@ public class UserController {
     @Autowired
     RoleCoreConvert roleCoreConvert;
 
-
+    @SaCheckPermission("user.view")
     @Operation(summary = "用户分页")
     @GetMapping
     public Result<PageData<UserDTO>> page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
@@ -58,6 +59,7 @@ public class UserController {
         return Result.success(PageUtil.makeResponse(page, userCoreConvert::model2Dto));
     }
 
+    @SaCheckPermission("user.view")
     @Operation(summary = "用户详情")
     @GetMapping("/{userId}")
     public Result<UserDTO> detail(@PathVariable("userId") String userId) {
@@ -65,6 +67,7 @@ public class UserController {
         return Result.success(userModel, userCoreConvert::model2Dto);
     }
 
+    @SaCheckPermission("user.create")
     @Operation(summary = "用户创建")
     @PostMapping
     public Result<String> create(@RequestBody UserDTO userDTO) {
@@ -72,6 +75,7 @@ public class UserController {
         return Result.success(userId);
     }
 
+    @SaCheckPermission("user.update")
     @Operation(summary = "用户编辑")
     @PutMapping("/{userId}")
     public Result<Boolean> edit(@PathVariable("userId") String userId, @RequestBody UserDTO userDTO) {
@@ -79,24 +83,28 @@ public class UserController {
         return Result.success(userService.edit(userCoreConvert.dto2Model(userDTO)));
     }
 
+    @SaCheckPermission("user.delete")
     @Operation(summary = "用户删除")
     @DeleteMapping("/{userId}")
     public Result<Boolean> delete(@PathVariable("userId") String userId) {
         return Result.success(userService.delete(userId));
     }
 
+    @SaCheckPermission("user.role.add")
     @Operation(summary = "用户添加角色")
     @PostMapping("/{userId}/role")
     public Result<Boolean> addRole(@PathVariable("userId") String userId, @RequestBody UserAddRoleReq req) {
         return Result.success(userService.addRole(userId, req));
     }
 
+    @SaCheckPermission("user.role.delete")
     @Operation(summary = "角色删除资源")
     @DeleteMapping("/{userId}/role")
     public Result<Boolean> delRole(@PathVariable("userId") String userId, @RequestBody UserDelRoleReq req) {
         return Result.success(userService.delRole(userId, req));
     }
 
+    @SaCheckPermission("user.role.view")
     @Operation(summary = "用户角色")
     @GetMapping("/{userId}/role")
     public Result<List<RoleDTO>> userRole(@PathVariable("userId") String userId) {
@@ -105,6 +113,7 @@ public class UserController {
     }
 
 
+    @SaCheckPermission("user.resource.view")
     @Operation(summary = "用户资源")
     @GetMapping("/{userId}/resource")
     public Result<List<ResourceDTO>> userResource(@PathVariable("userId") String userId) {
@@ -133,6 +142,7 @@ public class UserController {
         return Result.success(userService.loginInfo(userId));
     }
 
+    @SaCheckPermission("user.password.update")
     @Operation(summary = "用户更新密码")
     @PostMapping("/update-password")
     public Result<Boolean> updatePassword(@RequestBody UserUpdatePasswordReq req) {

@@ -1,5 +1,6 @@
 package tech.oldhorse.shop.web.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class ConfigController {
     @Autowired
     private ConfigCoreConvert configCoreConvert;
 
+    @SaCheckPermission("config.view")
     @Operation(summary = "参数配置列表")
     @GetMapping
     public Result<List<ConfigDTO>> list() {
@@ -40,6 +42,7 @@ public class ConfigController {
         return Result.success(configCoreConvert.modelList2DtoList(configModels));
     }
 
+    @SaCheckPermission("config.view")
     @Operation(summary = "参数配置详情")
     @GetMapping("/{configId}")
     public Result<ConfigDTO> detail(@PathVariable("configId") String configId) {
@@ -47,6 +50,7 @@ public class ConfigController {
         return Result.success(configModel, configCoreConvert::model2Dto);
     }
 
+    @SaCheckPermission("config.create")
     @Operation(summary = "参数配置创建")
     @PostMapping
     public Result<String> create(@RequestBody ConfigDTO configDTO) {
@@ -54,6 +58,7 @@ public class ConfigController {
         return Result.success(configId);
     }
 
+    @SaCheckPermission("config.update")
     @Operation(summary = "参数配置编辑")
     @PutMapping("/{configId}")
     public Result<Boolean> edit(@PathVariable("configId") String configId,
@@ -62,6 +67,7 @@ public class ConfigController {
         return Result.success(configService.edit(configCoreConvert.dto2Model(configDTO)));
     }
 
+    @SaCheckPermission("config.delete")
     @Operation(summary = "参数配置删除")
     @DeleteMapping("/{configId}")
     public Result<Boolean> delete(@PathVariable("configId") String configId) {

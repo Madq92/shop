@@ -1,5 +1,6 @@
 package tech.oldhorse.shop.web.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class RoleController {
     @Autowired
     private RoleCoreConvert roleCoreConvert;
 
+    @SaCheckPermission("role.view")
     @Operation(summary = "角色列表")
     @GetMapping
     public Result<List<RoleDTO>> list() {
@@ -41,6 +43,7 @@ public class RoleController {
         return Result.success(roleCoreConvert.modelList2DtoList(roleModels));
     }
 
+    @SaCheckPermission("role.view")
     @Operation(summary = "角色详情")
     @GetMapping("/{roleId}")
     public Result<RoleDTO> detail(@PathVariable("roleId") String roleId) {
@@ -48,6 +51,7 @@ public class RoleController {
         return Result.success(roleModel, roleCoreConvert::model2Dto);
     }
 
+    @SaCheckPermission("role.create")
     @Operation(summary = "角色创建")
     @PostMapping
     public Result<String> create(@RequestBody RoleDTO roleDTO) {
@@ -55,6 +59,7 @@ public class RoleController {
         return Result.success(roleId);
     }
 
+    @SaCheckPermission("role.update")
     @Operation(summary = "角色编辑")
     @PutMapping("/{roleId}")
     public Result<Boolean> edit(@PathVariable("roleId") String roleId, @RequestBody RoleDTO roleDTO) {
@@ -62,18 +67,21 @@ public class RoleController {
         return Result.success(roleService.edit(roleCoreConvert.dto2Model(roleDTO)));
     }
 
+    @SaCheckPermission("role.delete")
     @Operation(summary = "角色删除")
     @DeleteMapping("/{roleId}")
     public Result<Boolean> delete(@PathVariable("roleId") String roleId) {
         return Result.success(roleService.delete(roleId));
     }
 
+    @SaCheckPermission("role.resource.add")
     @Operation(summary = "角色添加资源")
     @PostMapping("/{roleId}/resource")
     public Result<Boolean> addResource(@PathVariable("roleId") String roleId, @RequestBody RoleAddResourceReq req) {
         return Result.success(roleService.addResource(roleId, req));
     }
 
+    @SaCheckPermission("role.resource.delete")
     @Operation(summary = "角色删除资源")
     @DeleteMapping("/{roleId}/resource")
     public Result<Boolean> delResource(@PathVariable("roleId") String roleId, @RequestBody RoleDelResourceReq req) {

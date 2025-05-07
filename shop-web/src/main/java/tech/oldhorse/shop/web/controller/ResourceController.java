@@ -1,5 +1,6 @@
 package tech.oldhorse.shop.web.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class ResourceController {
     @Autowired
     ResourceCoreConvert resourceCoreConvert;
 
+    @SaCheckPermission("resource.view")
     @Operation(summary = "资源列表")
     @GetMapping
     public Result<List<ResourceDTO>> list() {
@@ -38,6 +40,7 @@ public class ResourceController {
         return Result.success(resourceCoreConvert.modelList2DtoList(resourceModels));
     }
 
+    @SaCheckPermission("resource.view")
     @Operation(summary = "资源详情")
     @GetMapping("/{resourceId}")
     public Result<ResourceDTO> detail(@PathVariable("resourceId") String resourceId) {
@@ -45,6 +48,7 @@ public class ResourceController {
         return Result.success(userModel, resourceCoreConvert::model2Dto);
     }
 
+    @SaCheckPermission("resource.create")
     @Operation(summary = "资源创建")
     @PostMapping
     public Result<String> create(@RequestBody ResourceDTO resourceDTO) {
@@ -52,6 +56,7 @@ public class ResourceController {
         return Result.success(resourceId);
     }
 
+    @SaCheckPermission("resource.update")
     @Operation(summary = "资源编辑")
     @PutMapping("/{resourceId}")
     public Result<Boolean> edit(@PathVariable("resourceId") String resourceId, @RequestBody ResourceDTO resourceDTO) {
@@ -59,6 +64,7 @@ public class ResourceController {
         return Result.success(resourceService.edit(resourceCoreConvert.dto2Model(resourceDTO)));
     }
 
+    @SaCheckPermission("resource.delete")
     @Operation(summary = "资源删除")
     @DeleteMapping("/{resourceId}")
     public Result<Boolean> delete(@PathVariable("resourceId") String resourceId) {

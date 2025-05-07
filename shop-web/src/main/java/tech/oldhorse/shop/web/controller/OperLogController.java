@@ -1,5 +1,6 @@
 package tech.oldhorse.shop.web.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class OperLogController {
     @Autowired
     private OperLogCoreConvert operLogCoreConvert;
 
+    @SaCheckPermission("operLog.view")
     @Operation(summary = "操作日志分页")
     @GetMapping
     public Result<PageData<OperLogDTO>> page(
@@ -42,6 +44,7 @@ public class OperLogController {
         return Result.success(PageUtil.makeResponse(page, operLogCoreConvert::model2Dto));
     }
 
+    @SaCheckPermission("operLog.view")
     @Operation(summary = "操作日志详情")
     @GetMapping("/{logId}")
     public Result<OperLogDTO> detail(@PathVariable("logId") Long logId) {
