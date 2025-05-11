@@ -176,6 +176,8 @@ public class UserServiceImpl implements UserService {
     private LambdaQueryChainWrapper<UserDO> buildLambdaQuery(UserCondition condition) {
         return userRepository.lambdaQuery()
                 .eq(UserDO::getDeletedFlag, false)
+                .eq(StringUtils.isNotBlank(condition.getEmail()), UserDO::getEmail, condition.getEmail())
+                .eq(StringUtils.isNotBlank(condition.getPhonenumber()), UserDO::getPhonenumber, condition.getPhonenumber())
                 .like(StringUtils.isNotBlank(condition.getNameLike()), UserDO::getName, condition.getNameLike());
     }
 
@@ -211,8 +213,10 @@ public class UserServiceImpl implements UserService {
 
         // 2.验证密码
         String password = URLDecoder.decode(req.getPassword(), StandardCharsets.UTF_8);
-        String decryptedPassword = RsaUtil.decrypt(password, CommonConstants.PRIVATE_KEY);
-        if (!passwordEncoder.matches(decryptedPassword, userModel.getPassword())) {
+        if (CommonConstants.FRONT_PASSWORD_ENCODE){
+            password = RsaUtil.decrypt(password, CommonConstants.PRIVATE_KEY);
+        }
+        if (!passwordEncoder.matches(password, userModel.getPassword())) {
             throw new UnauthorizedException("账号密码错误");
         }
 

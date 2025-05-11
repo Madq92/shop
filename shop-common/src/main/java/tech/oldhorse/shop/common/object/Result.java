@@ -21,11 +21,11 @@ public class Result<T> {
     /**
      * 错误码。
      */
-    private String errorCode = "NO-ERROR";
+    private String errorCode = "SUCCESS";
     /**
      * 错误信息描述。
      */
-    private String errorMessage = "NO-MESSAGE";
+    private String errorMessage = "";
     /**
      * 实际数据。
      */

@@ -41,6 +41,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (BooleanUtil.isTrue(SaStrategy.instance.isAnnotationPresent.apply(method, SaIgnore.class))) {
                 return true;
             }
+
+            Class<?> beanType = ((HandlerMethod) handler).getBeanType();
+            if (!beanType.getPackageName().startsWith("tech.oldhorse.shop")) {
+                // 跳过swagger的请求
+                return true;
+            }
             responseError(response, HttpServletResponse.SC_UNAUTHORIZED, Result.error(ErrorCodeEnum.UNAUTHORIZED_EXCEPTION));
             return false;
         }
@@ -51,18 +57,18 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        String userId = (String) session.getLoginId();
+        String userId = StpUtil.getLoginIdAsString();
         WebContext webContext = new WebContext();
         webContext.setUserId(userId);
         WebContextHolder.setWebContext(webContext);
 
-        try {
-            //执行基于stoken的注解鉴权。
-            SaStrategy.instance.checkMethodAnnotation.accept(method);
-        } catch (SaTokenException e) {
-            responseError(response, HttpServletResponse.SC_FORBIDDEN, Result.error(ErrorCodeEnum.NO_ACCESS_PERMISSION));
-            return false;
-        }
+//        try {
+//            //执行基于stoken的注解鉴权。
+//            SaStrategy.instance.checkMethodAnnotation.accept(method);
+//        } catch (SaTokenException e) {
+//            responseError(response, HttpServletResponse.SC_FORBIDDEN, Result.error(ErrorCodeEnum.NO_ACCESS_PERMISSION));
+//            return false;
+//        }
         return true;
     }
 

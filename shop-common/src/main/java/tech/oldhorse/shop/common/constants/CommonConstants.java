@@ -27,6 +27,7 @@ public class CommonConstants {
     public static final int BATCH_QUERY_SIZE = 100;
     public static final String SESSION_EMPLOYEE_KEY = "CURRENT_EMPLOYEE";
     public static final String SESSION_WX_USER_KEY = "CURRENT_WX_USER";
+    public static final String EMPTY_STR = "";
     /**
      * Token有效时间，秒
      */
@@ -44,6 +45,8 @@ public class CommonConstants {
             "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAItrv6UAzRuh6eK1IatEScSz8/byyHHCd38Pw6bjYTpM3oUNnhvMOJ/ECKhKJXu1/pH4CxGYCmcUqU2RCMErTu0kTLm66JoN5zXSfQ5C+s4NvTnFxV0ldnhpTjXmcSNfczoWZBttMaY20IvPhqqejhi8y+PNLhmndWFtubVgJts5AgMBAAECgYAA7MRO8SgrKoINb7OrOe7+V85CwV4MiSR3SpC68u+ybg+c1NgLaamnf6qqCSHiBfVMHRfftEE/aU7tNYzYETQ7Ems57rArjz+YP2ElR0LhoCyVj88QISKEWHD6pfIA7Q5srLFk+xZjniBRaRyRrWfePV1//H4jXVk2NKiTdKR0zQJBAO5g4Jtihn6kTBDUmMjSqP0JblOn1Oc4n3OpaTgS9CBz2kqvMqhPytvDC75NCzUr6CwhWTydxQJWfZvluvor/fUCQQCVui2sMnY9LIoVoZggaUdVLddJHgKbMVidtwA/3saLMZWbFh0KJeUQA1Ity8fDJ875Vt2Ylk2WNRY+Am36Rfm1AkBs87Z1DskuJOXnY2QZlb9LN/5HGhSDQiwO70V6LZ+LHaiOLhlXOHEdlL5PUmNnABRz5yIkRHABK4rpsEyPf3/pAkB/ejIkqBoPX3p5jEmvXrNDDHJ9aDWj2FGwhfyKZKv6Gs9baWp0F2t9RLaVEykTOTN5CsJEhcOtHanAReVI7ob5AkAZiM0ZTsKSOvFd41sVrdUKaylqubRBdd+RiipRtb8Whvx25GBQAlHTMgsYYVMLavo94l7OzkdDpP3KQL8/9fII";
     public static final String PUBLIC_KEY =
             "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLa7+lAM0boenitSGrREnEs/P28shxwnd/D8Om42E6TN6FDZ4bzDifxAioSiV7tf6R+AsRmApnFKlNkQjBK07tJEy5uuiaDec10n0OQvrODb05xcVdJXZ4aU415nEjX3M6FmQbbTGmNtCLz4aqno4YvMvjzS4Zp3Vhbbm1YCbbOQIDAQAB";
-    public static String EMPTY_STR = "";
-
+    /**
+     * 前端密码是否加密
+     */
+    public static final Boolean FRONT_PASSWORD_ENCODE = false;
 }
