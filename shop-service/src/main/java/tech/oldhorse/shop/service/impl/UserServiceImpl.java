@@ -73,6 +73,8 @@ public class UserServiceImpl implements UserService {
         userModel.setUserId(userId);
         userModel.setStatus(UserStatusEnum.ENABLE);
 
+        userModel.setPassword(passwordEncoder.encode("123456"));
+
         userRepository.save(userCoreConvert.model2Do(userModel));
         return userId;
     }
@@ -213,7 +215,7 @@ public class UserServiceImpl implements UserService {
 
         // 2.验证密码
         String password = URLDecoder.decode(req.getPassword(), StandardCharsets.UTF_8);
-        if (CommonConstants.FRONT_PASSWORD_ENCODE){
+        if (CommonConstants.FRONT_PASSWORD_ENCODE) {
             password = RsaUtil.decrypt(password, CommonConstants.PRIVATE_KEY);
         }
         if (!passwordEncoder.matches(password, userModel.getPassword())) {
