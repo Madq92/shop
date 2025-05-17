@@ -25,10 +25,10 @@ public class RoleModel extends BaseModel {
     /**
      * 显示顺序
      */
-    private Integer roleSort;
+    private Integer sort;
 
     /**
      * 资源列表
      */
-    private List<ResourceModel> resourceList;
+    private List<ResourceModel> resources;
 }

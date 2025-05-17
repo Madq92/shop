@@ -23,7 +23,7 @@ public class ResourceModel extends BaseModel {
     /**
      * 显示顺序
      */
-    private Integer orderNum;
+    private Integer sort;
 
     /**
      * 请求地址

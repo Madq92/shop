@@ -2,6 +2,7 @@ package tech.oldhorse.shop.service.object.model;
 
 import lombok.Data;
 import tech.oldhorse.shop.common.object.BaseModel;
+import tech.oldhorse.shop.service.enums.UserGenderEnum;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
 
 import java.time.LocalDateTime;
@@ -30,9 +31,9 @@ public class UserModel extends BaseModel {
     private String phonenumber;
 
     /**
-     * 用户性别（0男 1女 2未知）
+     * 用户性别
      */
-    private String sex;
+    private UserGenderEnum gender;
 
     /**
      * 头像路径

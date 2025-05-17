@@ -22,6 +22,8 @@ public interface UserService {
 
     UserModel getByUserId(String userId);
 
+    UserModel detaile(String userId);
+
     PageData<UserModel> pageByCondition(UserCondition condition);
 
     List<UserModel> listByCondition(UserCondition condition);
@@ -41,6 +43,5 @@ public interface UserService {
     Boolean logout(String userId);
 
     Boolean updatePassword(String userId, UserUpdatePasswordReq req);
-
 
 }

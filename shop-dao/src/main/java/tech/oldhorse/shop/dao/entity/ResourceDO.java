@@ -38,7 +38,7 @@ public class ResourceDO extends BaseEntity {
     /**
      * 显示顺序
      */
-    private Integer orderNum;
+    private Integer sort;
 
     /**
      * 请求地址

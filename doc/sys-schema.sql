@@ -51,12 +51,12 @@ CREATE TABLE `resource`
     `resource_id`        varchar(32)  NOT NULL COMMENT '资源ID',
     `resource_name`      varchar(128) NOT NULL COMMENT '资源名称',
     `parent_resource_id` varchar(32)           DEFAULT NULL COMMENT '父资源ID',
-    `order_num`          int          NOT NULL DEFAULT '0' COMMENT '显示顺序',
-    `url`                varchar(256) NOT NULL DEFAULT '#' COMMENT '请求地址',
+    `sort`               int          NOT NULL DEFAULT '0' COMMENT '显示顺序',
+    `url`                varchar(256) NOT NULL DEFAULT '' COMMENT '请求地址',
     `resource_type`      varchar(32)  NOT NULL DEFAULT 'MENU' COMMENT '菜单类型（MENU菜单 BUTTON按钮）',
     `visible`            tinyint               DEFAULT '0' COMMENT '菜单状态（1显示 0隐藏）',
     `perms`              varchar(128)          DEFAULT NULL COMMENT '权限标识',
-    `icon`               varchar(128)          DEFAULT '#' COMMENT '菜单图标',
+    `icon`               varchar(128)          DEFAULT '' COMMENT '菜单图标',
     `tenant_id`          varchar(32)  NOT NULL COMMENT '租户ID',
     `deleted_flag`       tinyint      NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     `create_time`        datetime(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '服务器创建时间',
@@ -74,7 +74,7 @@ CREATE TABLE `role`
     `role_id`      varchar(32)  NOT NULL COMMENT '角色ID',
     `role_name`    varchar(32)  NOT NULL COMMENT '角色名称',
     `role_key`     varchar(128) NOT NULL COMMENT '角色权限字符串',
-    `role_sort`    int          NOT NULL COMMENT '显示顺序',
+    `sort`         int          NOT NULL DEFAULT '0' COMMENT '显示顺序',
     `tenant_id`    varchar(32)  NOT NULL COMMENT '租户ID',
     `deleted_flag` tinyint      NOT NULL DEFAULT '0' COMMENT '逻辑删除标记',
     `create_time`  datetime(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '服务器创建时间',
@@ -112,7 +112,8 @@ CREATE TABLE `tenant`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='租户';
-INSERT INTO tenant (id, tenant_id, root_user_id, status, deleted_flag, create_time, update_time) VALUES (1, '0', '1917552025285955584', 'ONLINE', 0, '2025-05-11 10:28:25.359223', '2025-05-11 10:28:25.359223');
+INSERT INTO tenant (id, tenant_id, root_user_id, status, deleted_flag, create_time, update_time)
+VALUES (1, '0', '1917552025285955584', 'ONLINE', 0, '2025-05-11 10:28:25.359223', '2025-05-11 10:28:25.359223');
 
 
 -- user: table
@@ -121,12 +122,12 @@ CREATE TABLE `user`
     `id`              int          NOT NULL AUTO_INCREMENT COMMENT '主键',
     `user_id`         varchar(32)  NOT NULL COMMENT '用户ID',
     `name`            varchar(128) NOT NULL COMMENT '用户名称',
-    `email`           varchar(50)           DEFAULT '' COMMENT '用户邮箱',
-    `phonenumber`     varchar(11)           DEFAULT '' COMMENT '手机号码',
-    `sex`             char(1)               DEFAULT NULL COMMENT '用户性别（0男 1女 2未知）',
-    `avatar`          varchar(100)          DEFAULT '' COMMENT '头像路径',
-    `password`        varchar(256)           DEFAULT '' COMMENT '密码',
-    `salt`            varchar(20)           DEFAULT '' COMMENT '盐加密',
+    `email`           varchar(64)           DEFAULT '' COMMENT '用户邮箱',
+    `phonenumber`     varchar(32)           DEFAULT '' COMMENT '手机号码',
+    `gender`          varchar(32)  NOT NULL DEFAULT 'NONE' COMMENT '用户性别',
+    `avatar`          varchar(128)          DEFAULT '' COMMENT '头像路径',
+    `password`        varchar(256)          DEFAULT '' COMMENT '密码',
+    `salt`            varchar(32)           DEFAULT '' COMMENT '盐加密',
     `login_ip`        varchar(128)          DEFAULT '' COMMENT '最后登录IP',
     `login_date`      datetime(6)           DEFAULT NULL COMMENT '最后登录时间',
     `pwd_update_date` datetime(6)           DEFAULT NULL COMMENT '密码最后更新时间',
@@ -141,8 +142,16 @@ CREATE TABLE `user`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户';
 
-INSERT INTO user (id, user_id, name, email, phonenumber, sex, avatar, password, salt, login_ip, login_date, pwd_update_date, status, tenant_id, deleted_flag, create_time, update_time) VALUES (1, '1917552025285955584', 'admin', 'admin@oldhorse.tech', '15658175186', '1', 'string', '$2a$10$VBX32mrDolqeYX8wsBfKjuY4B1nLgkDzUBec0G//LDC3O2yXqhgDG', '', 'string', null, null, 'ENABLE', '0', 0, '2025-04-30 12:10:07.579742', '2025-05-11 09:46:19.839752');
-INSERT INTO user (id, user_id, name, email, phonenumber, sex, avatar, password, salt, login_ip, login_date, pwd_update_date, status, tenant_id, deleted_flag, create_time, update_time) VALUES (2, '1917553416884719616', 'user1', 'user1@oldhorse.tech', '15658175187', '1', 'string', '$2a$10$VBX32mrDolqeYX8wsBfKjuY4B1nLgkDzUBec0G//LDC3O2yXqhgDG', '', 'string', null, null, 'ENABLE', '0', 0, '2025-04-30 12:15:35.676371', '2025-05-11 09:46:19.833893');
+INSERT INTO user (id, user_id, name, email, phonenumber, gender, avatar, password, salt, login_ip, login_date,
+                  pwd_update_date, status, tenant_id, deleted_flag, create_time, update_time)
+VALUES (1, '1917552025285955584', 'admin', 'admin@oldhorse.tech', '15658175186', 'MALE', 'string',
+        '$2a$10$VBX32mrDolqeYX8wsBfKjuY4B1nLgkDzUBec0G//LDC3O2yXqhgDG', '', 'string', null, null, 'ENABLE', '0', 0,
+        '2025-04-30 12:10:07.579742', '2025-05-11 09:46:19.839752');
+INSERT INTO user (id, user_id, name, email, phonenumber, gender, avatar, password, salt, login_ip, login_date,
+                  pwd_update_date, status, tenant_id, deleted_flag, create_time, update_time)
+VALUES (2, '1917553416884719616', 'user1', 'user1@oldhorse.tech', '15658175187', 'FEMALE', 'string',
+        '$2a$10$VBX32mrDolqeYX8wsBfKjuY4B1nLgkDzUBec0G//LDC3O2yXqhgDG', '', 'string', null, null, 'ENABLE', '0', 0,
+        '2025-04-30 12:15:35.676371', '2025-05-11 09:46:19.833893');
 
 
 -- user_role: table

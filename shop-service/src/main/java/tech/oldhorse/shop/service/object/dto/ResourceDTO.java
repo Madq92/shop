@@ -12,7 +12,7 @@ public class ResourceDTO {
     @Schema(description = "父资源ID")
     private String parentResourceId;
     @Schema(description = "显示顺序")
-    private Integer orderNum;
+    private Integer sort;
     @Schema(description = "请求地址")
     private String url;
     @Schema(description = "菜单类型（MENU菜单 BUTTON按钮）")

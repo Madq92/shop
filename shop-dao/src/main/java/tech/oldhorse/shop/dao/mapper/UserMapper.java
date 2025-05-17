@@ -9,7 +9,7 @@ import tech.oldhorse.shop.dao.entity.UserDO;
  * </p>
  *
  * @author mika
- * @since 2025-04-23
+ * @since 2025-05-17
  */
 public interface UserMapper extends BaseMapper<UserDO> {
 

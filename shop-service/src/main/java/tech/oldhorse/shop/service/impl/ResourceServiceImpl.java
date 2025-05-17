@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.oldhorse.shop.common.utils.AssertUtils;
 import tech.oldhorse.shop.dao.entity.ResourceDO;
+import tech.oldhorse.shop.dao.entity.RoleDO;
 import tech.oldhorse.shop.dao.entity.RoleResourceDO;
 import tech.oldhorse.shop.dao.repository.ResourceRepository;
 import tech.oldhorse.shop.dao.repository.RoleResourceRepository;
@@ -35,6 +36,10 @@ public class ResourceServiceImpl implements ResourceService {
         String resourceId = idGenerator.nextStringId();
         resourceModel.setResourceId(resourceId);
 
+        if (resourceModel.getSort() == null){
+            resourceModel.setSort(getMaxSort() + 1);
+        }
+
         ResourceDO resourceDO = resourceCoreConvert.model2Do(resourceModel);
         resourceRepository.save(resourceDO);
         return resourceId;
@@ -45,9 +50,23 @@ public class ResourceServiceImpl implements ResourceService {
         ResourceModel resourceInDb = getByResourceId(resourceModel.getResourceId());
         AssertUtils.notNull(resourceInDb);
 
+        if (resourceModel.getSort() == null){
+            resourceModel.setSort(getMaxSort() + 1);
+        }
+
         ResourceDO resourceDO = resourceCoreConvert.model2Do(resourceModel);
         resourceDO.setId(resourceInDb.getId());
         return resourceRepository.updateById(resourceDO);
+    }
+
+    private Integer getMaxSort() {
+        return resourceRepository.lambdaQuery()
+                .eq(ResourceDO::getDeletedFlag, false)
+                .orderByDesc(ResourceDO::getSort)
+                .last("limit 1")
+                .oneOpt()
+                .map(ResourceDO::getSort)
+                .orElse(0);
     }
 
     @Override

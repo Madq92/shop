@@ -15,6 +15,8 @@ import tech.oldhorse.shop.service.condition.UserCondition;
 import tech.oldhorse.shop.service.convert.ResourceCoreConvert;
 import tech.oldhorse.shop.service.convert.RoleCoreConvert;
 import tech.oldhorse.shop.service.convert.UserCoreConvert;
+import tech.oldhorse.shop.service.enums.UserGenderEnum;
+import tech.oldhorse.shop.service.enums.UserStatusEnum;
 import tech.oldhorse.shop.service.object.dto.ResourceDTO;
 import tech.oldhorse.shop.service.object.dto.RoleDTO;
 import tech.oldhorse.shop.service.object.dto.UserDTO;
@@ -53,8 +55,21 @@ public class UserController {
     @SaCheckPermission("user.view")
     @Operation(summary = "用户分页")
     @GetMapping
-    public Result<PageData<UserDTO>> page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+    public Result<PageData<UserDTO>> page(@RequestParam("pageNum") Integer pageNum,
+                                          @RequestParam("pageSize") Integer pageSize,
+                                          @RequestParam(required = false, value = "name") String name,
+                                          @RequestParam(required = false, value = "email") String email,
+                                          @RequestParam(required = false, value = "phonenumber") String phonenumber,
+                                          @RequestParam(required = false, value = "status") String status,
+                                          @RequestParam(required = false, value = "gender") String gender
+    ) {
         UserCondition condition = new UserCondition(pageNum, pageSize);
+        condition.setNameLike(name);
+        condition.setEmail(email);
+        condition.setPhonenumber(phonenumber);
+        condition.setStatus(UserStatusEnum.getByName(status));
+        condition.setGender(UserGenderEnum.getByName(gender));
+
         PageData<UserModel> page = userService.pageByCondition(condition);
         return Result.success(PageUtil.makeResponse(page, userCoreConvert::model2Dto));
     }
@@ -63,7 +78,7 @@ public class UserController {
     @Operation(summary = "用户详情")
     @GetMapping("/{userId}")
     public Result<UserDTO> detail(@PathVariable("userId") String userId) {
-        UserModel userModel = userService.getByUserId(userId);
+        UserModel userModel = userService.detaile(userId);
         return Result.success(userModel, userCoreConvert::model2Dto);
     }
 

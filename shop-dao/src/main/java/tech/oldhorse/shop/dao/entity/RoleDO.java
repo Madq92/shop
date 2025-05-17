@@ -38,5 +38,5 @@ public class RoleDO extends BaseEntity {
     /**
      * 显示顺序
      */
-    private Integer roleSort;
+    private Integer sort;
 }

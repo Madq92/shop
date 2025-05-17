@@ -5,13 +5,14 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum UserStatusEnum {
-    ENABLE("启用"),
-    DISABLE("停用");
+public enum UserGenderEnum {
+    MALE("男"),
+    FEMALE("女"),
+    NONE("未知");
     private String desc;
 
-    public static UserStatusEnum getByName(String status) {
-        for (UserStatusEnum value : values()) {
+    public static UserGenderEnum getByName(String status) {
+        for (UserGenderEnum value : values()) {
             if (value.name().equals(status)) {
                 return value;
             }

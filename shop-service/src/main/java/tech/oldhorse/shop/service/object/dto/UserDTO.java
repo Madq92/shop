@@ -2,9 +2,11 @@ package tech.oldhorse.shop.service.object.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import tech.oldhorse.shop.service.enums.UserGenderEnum;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UserDTO {
@@ -16,8 +18,8 @@ public class UserDTO {
     private String email;
     @Schema(description = "手机号码")
     private String phonenumber;
-    @Schema(description = "用户性别（0男 1女 2未知）")
-    private String sex;
+    @Schema(description = "用户性别")
+    private UserGenderEnum gender;
     @Schema(description = "头像路径")
     private String avatar;
     @Schema(description = "最后登录IP")
@@ -28,4 +30,9 @@ public class UserDTO {
     private LocalDateTime pwdUpdateDate;
     @Schema(description = "用户状态")
     private UserStatusEnum status;
+
+    @Schema(description = "用户角色")
+    private List<RoleDTO> roles;
+    @Schema(description = "用户资源")
+    private List<ResourceDTO> resources;
 }

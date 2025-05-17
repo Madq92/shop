@@ -42,6 +42,7 @@ public class RoleServiceImpl implements RoleService {
         List<RoleDO> list = roleRepository.lambdaQuery()
                 .eq(RoleDO::getDeletedFlag, false)
                 .in(CollectionUtils.isNotEmpty(condition.getRoleIds()), RoleDO::getRoleId, condition.getRoleIds())
+                .orderByAsc(RoleDO::getSort)
                 .list();
         return roleCoreConvert.doList2ModelList(list);
     }
@@ -58,8 +59,10 @@ public class RoleServiceImpl implements RoleService {
         String roleId = idGenerator.nextStringId();
         roleModel.setRoleId(roleId);
 
-        RoleDO roleDO = roleCoreConvert.model2Do(roleModel);
-        roleRepository.save(roleDO);
+        if (roleModel.getSort() == null) {
+            roleModel.setSort(getMaxSort() + 1);
+        }
+        roleRepository.save(roleCoreConvert.model2Do(roleModel));
         return roleId;
     }
 
@@ -68,9 +71,23 @@ public class RoleServiceImpl implements RoleService {
         RoleModel roleInDb = getByRoleId(roleModel.getRoleId());
         AssertUtils.notNull(roleInDb);
 
+        if (roleModel.getSort() == null) {
+            roleModel.setSort(getMaxSort() + 1);
+        }
+
         RoleDO roleDO = roleCoreConvert.model2Do(roleModel);
         roleDO.setId(roleInDb.getId());
         return roleRepository.updateById(roleDO);
+    }
+
+    private Integer getMaxSort() {
+        return roleRepository.lambdaQuery()
+                .eq(RoleDO::getDeletedFlag, false)
+                .orderByDesc(RoleDO::getSort)
+                .last("limit 1")
+                .oneOpt()
+                .map(RoleDO::getSort)
+                .orElse(0);
     }
 
     @Override

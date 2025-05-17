@@ -107,8 +107,19 @@ public class UserServiceImpl implements UserService {
                 .eq(UserDO::getDeletedFlag, false)
                 .one();
         AssertUtils.notNull(one);
-
         return userCoreConvert.do2Model(one);
+    }
+
+    @Override
+    public UserModel detaile(String userId) {
+        UserModel userModel = getByUserId(userId);
+
+        // 获取用户角色
+        userModel.setRoles(getUserRole(userId));
+
+        // 获取用户资源
+        userModel.setResources(getUserResource(userId));
+        return userModel;
     }
 
     @Override
@@ -180,6 +191,8 @@ public class UserServiceImpl implements UserService {
                 .eq(UserDO::getDeletedFlag, false)
                 .eq(StringUtils.isNotBlank(condition.getEmail()), UserDO::getEmail, condition.getEmail())
                 .eq(StringUtils.isNotBlank(condition.getPhonenumber()), UserDO::getPhonenumber, condition.getPhonenumber())
+                .eq(null != condition.getStatus(), UserDO::getStatus, condition.getStatus())
+                .eq(null != condition.getGender(), UserDO::getGender, condition.getGender())
                 .like(StringUtils.isNotBlank(condition.getNameLike()), UserDO::getName, condition.getNameLike());
     }
 

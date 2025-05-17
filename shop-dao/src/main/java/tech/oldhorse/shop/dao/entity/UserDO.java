@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author mika
- * @since 2025-04-23
+ * @since 2025-05-17
  */
 @Getter
 @Setter
@@ -42,9 +42,9 @@ public class UserDO extends BaseEntity {
     private String phonenumber;
 
     /**
-     * 用户性别（0男 1女 2未知）
+     * 用户性别
      */
-    private String sex;
+    private String gender;
 
     /**
      * 头像路径

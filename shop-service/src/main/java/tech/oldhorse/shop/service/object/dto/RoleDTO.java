@@ -14,7 +14,7 @@ public class RoleDTO {
     @Schema(description = "角色权限字符串")
     private String roleKey;
     @Schema(description = "显示顺序")
-    private Integer roleSort;
+    private Integer sort;
     @Schema(description = "资源列表")
-    private List<ResourceDTO> resourceList;
+    private List<ResourceDTO> resources;
 }

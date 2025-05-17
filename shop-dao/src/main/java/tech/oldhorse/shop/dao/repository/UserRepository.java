@@ -1,7 +1,7 @@
 package tech.oldhorse.shop.dao.repository;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import tech.oldhorse.shop.dao.entity.UserDO;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import tech.oldhorse.shop.dao.entity.UserDO;
  * </p>
  *
  * @author mika
- * @since 2025-04-23
+ * @since 2025-05-17
  */
 public interface UserRepository extends IService<UserDO> {
 
