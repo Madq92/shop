@@ -2,6 +2,7 @@ package tech.oldhorse.shop.service.object.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import tech.oldhorse.shop.service.enums.ResourceTypeEnum;
 
 @Data
 public class ResourceDTO {
@@ -15,8 +16,8 @@ public class ResourceDTO {
     private Integer sort;
     @Schema(description = "请求地址")
     private String url;
-    @Schema(description = "菜单类型（MENU菜单 BUTTON按钮）")
-    private String resourceType;
+    @Schema(description = "菜单类型")
+    private ResourceTypeEnum resourceType;
     @Schema(description = "菜单状态")
     private Boolean visible;
     @Schema(description = "权限标识")

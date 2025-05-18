@@ -6,9 +6,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.oldhorse.shop.common.object.Result;
+import tech.oldhorse.shop.common.utils.EnumUtils;
 import tech.oldhorse.shop.service.ResourceService;
 import tech.oldhorse.shop.service.condition.ResourceCondition;
 import tech.oldhorse.shop.service.convert.ResourceCoreConvert;
+import tech.oldhorse.shop.service.enums.ResourceTypeEnum;
 import tech.oldhorse.shop.service.object.dto.ResourceDTO;
 import tech.oldhorse.shop.service.object.model.ResourceModel;
 
@@ -34,8 +36,9 @@ public class ResourceController {
     @SaCheckPermission("resource.view")
     @Operation(summary = "资源列表")
     @GetMapping
-    public Result<List<ResourceDTO>> list() {
+    public Result<List<ResourceDTO>> list( @RequestParam(required = false, value = "type") String type) {
         ResourceCondition condition = new ResourceCondition();
+        condition.setType(EnumUtils.getByName(ResourceTypeEnum.class, type));
         List<ResourceModel> resourceModels = resourceService.listByCondition(condition);
         return Result.success(resourceCoreConvert.modelList2DtoList(resourceModels));
     }

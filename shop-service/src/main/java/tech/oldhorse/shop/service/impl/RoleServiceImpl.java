@@ -1,5 +1,6 @@
 package tech.oldhorse.shop.service.impl;
 
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,10 @@ import org.springframework.stereotype.Service;
 import tech.oldhorse.shop.common.utils.AssertUtils;
 import tech.oldhorse.shop.dao.entity.RoleDO;
 import tech.oldhorse.shop.dao.entity.RoleResourceDO;
+import tech.oldhorse.shop.dao.entity.UserRoleDO;
 import tech.oldhorse.shop.dao.repository.RoleRepository;
 import tech.oldhorse.shop.dao.repository.RoleResourceRepository;
+import tech.oldhorse.shop.dao.repository.UserRoleRepository;
 import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
 import tech.oldhorse.shop.service.ResourceService;
 import tech.oldhorse.shop.service.RoleService;
@@ -17,8 +20,6 @@ import tech.oldhorse.shop.service.condition.RoleCondition;
 import tech.oldhorse.shop.service.convert.RoleCoreConvert;
 import tech.oldhorse.shop.service.object.model.ResourceModel;
 import tech.oldhorse.shop.service.object.model.RoleModel;
-import tech.oldhorse.shop.service.object.request.RoleAddResourceReq;
-import tech.oldhorse.shop.service.object.request.RoleDelResourceReq;
 
 import java.util.List;
 
@@ -33,9 +34,10 @@ public class RoleServiceImpl implements RoleService {
     IdGeneratorWrapper idGenerator;
     @Autowired
     RoleResourceRepository roleResourceRepository;
-
     @Autowired
     ResourceService resourceService;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Override
     public List<RoleModel> listByCondition(RoleCondition condition) {
@@ -55,6 +57,19 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public RoleModel getDetail(String roleId) {
+        RoleModel roleModel = getByRoleId(roleId);
+
+        // 获取资源
+        ResourceCondition condition = new ResourceCondition();
+        condition.setRoleIds(Lists.newArrayList(roleId));
+        List<ResourceModel> resourceModels = resourceService.listByCondition(condition);
+        roleModel.setResources(resourceModels);
+
+        return roleModel;
+    }
+
+    @Override
     public String create(RoleModel roleModel) {
         String roleId = idGenerator.nextStringId();
         roleModel.setRoleId(roleId);
@@ -63,6 +78,13 @@ public class RoleServiceImpl implements RoleService {
             roleModel.setSort(getMaxSort() + 1);
         }
         roleRepository.save(roleCoreConvert.model2Do(roleModel));
+
+        // 创建资源关联
+        List<ResourceModel> resources = roleModel.getResources();
+        if (CollectionUtils.isNotEmpty(resources)) {
+            List<RoleResourceDO> roleResourceDOList = resources.stream().map(resourceModel -> new RoleResourceDO(roleId, resourceModel.getResourceId())).toList();
+            roleResourceRepository.saveBatch(roleResourceDOList);
+        }
         return roleId;
     }
 
@@ -77,7 +99,18 @@ public class RoleServiceImpl implements RoleService {
 
         RoleDO roleDO = roleCoreConvert.model2Do(roleModel);
         roleDO.setId(roleInDb.getId());
-        return roleRepository.updateById(roleDO);
+        roleRepository.updateById(roleDO);
+
+        // 创建资源关联
+        String roleId = roleModel.getRoleId();
+        // -- 全删
+        roleResourceRepository.lambdaUpdate().eq(RoleResourceDO::getRoleId, roleId).remove();
+        // -- 全增
+        if (CollectionUtils.isNotEmpty(roleModel.getResources())) {
+            List<RoleResourceDO> list = roleModel.getResources().stream().map(resourceModel -> new RoleResourceDO(roleId, resourceModel.getResourceId())).toList();
+            roleResourceRepository.saveBatch(list);
+        }
+        return true;
     }
 
     private Integer getMaxSort() {
@@ -95,35 +128,16 @@ public class RoleServiceImpl implements RoleService {
         RoleModel roleInDb = getByRoleId(roleId);
         AssertUtils.notNull(roleInDb);
 
-        RoleResourceDO one = roleResourceRepository.lambdaQuery().eq(RoleResourceDO::getRoleId, roleId).one();
-        AssertUtils.isNull(one, "角色被引用，无法删除");
+        UserRoleDO one = userRoleRepository.lambdaQuery().eq(UserRoleDO::getRoleId, roleId).one();
+        AssertUtils.isNull(one, "角色被用户引用，无法删除");
 
         RoleDO update = new RoleDO();
         update.setId(roleInDb.getId());
         update.setDeletedFlag(true);
-        return roleRepository.updateById(update);
-    }
+        roleRepository.updateById(update);
 
-    @Override
-    public Boolean addResource(String roleId, RoleAddResourceReq req) {
-        RoleModel roleInDb = getByRoleId(roleId);
-        AssertUtils.notNull(roleInDb, "角色不存在");
-
-        ResourceCondition resourceCondition = new ResourceCondition();
-        resourceCondition.setResourceIds(req.getResourceIds());
-        List<ResourceModel> resourceModels = resourceService.listByCondition(resourceCondition);
-        AssertUtils.notNull(resourceModels, "资源不存在");
-
-        List<RoleResourceDO> list = resourceModels.stream().map(resourceModel -> new RoleResourceDO(roleId, resourceModel.getResourceId())).toList();
-        return roleResourceRepository.saveBatch(list);
-    }
-
-    @Override
-    public Boolean delResource(String roleId, RoleDelResourceReq req) {
-        List<RoleResourceDO> list = roleResourceRepository.lambdaQuery().eq(RoleResourceDO::getRoleId, roleId).in(RoleResourceDO::getResourceId, req.getResourceIds()).list();
-        if (CollectionUtils.isEmpty(list)) {
-            return true;
-        }
-        return roleResourceRepository.removeBatchByIds(list.stream().map(RoleResourceDO::getId).toList());
+        // 删除角色关联的资源
+        roleResourceRepository.lambdaUpdate().eq(RoleResourceDO::getRoleId, roleId).remove();
+        return true;
     }
 }

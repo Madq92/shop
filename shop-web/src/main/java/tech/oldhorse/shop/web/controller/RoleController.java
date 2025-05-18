@@ -11,8 +11,6 @@ import tech.oldhorse.shop.service.condition.RoleCondition;
 import tech.oldhorse.shop.service.convert.RoleCoreConvert;
 import tech.oldhorse.shop.service.object.dto.RoleDTO;
 import tech.oldhorse.shop.service.object.model.RoleModel;
-import tech.oldhorse.shop.service.object.request.RoleAddResourceReq;
-import tech.oldhorse.shop.service.object.request.RoleDelResourceReq;
 
 import java.util.List;
 
@@ -47,7 +45,7 @@ public class RoleController {
     @Operation(summary = "角色详情")
     @GetMapping("/{roleId}")
     public Result<RoleDTO> detail(@PathVariable("roleId") String roleId) {
-        RoleModel roleModel = roleService.getByRoleId(roleId);
+        RoleModel roleModel = roleService.getDetail(roleId);
         return Result.success(roleModel, roleCoreConvert::model2Dto);
     }
 
@@ -72,19 +70,5 @@ public class RoleController {
     @DeleteMapping("/{roleId}")
     public Result<Boolean> delete(@PathVariable("roleId") String roleId) {
         return Result.success(roleService.delete(roleId));
-    }
-
-    @SaCheckPermission("role.resource.add")
-    @Operation(summary = "角色添加资源")
-    @PostMapping("/{roleId}/resource")
-    public Result<Boolean> addResource(@PathVariable("roleId") String roleId, @RequestBody RoleAddResourceReq req) {
-        return Result.success(roleService.addResource(roleId, req));
-    }
-
-    @SaCheckPermission("role.resource.delete")
-    @Operation(summary = "角色删除资源")
-    @DeleteMapping("/{roleId}/resource")
-    public Result<Boolean> delResource(@PathVariable("roleId") String roleId, @RequestBody RoleDelResourceReq req) {
-        return Result.success(roleService.delResource(roleId, req));
     }
 }

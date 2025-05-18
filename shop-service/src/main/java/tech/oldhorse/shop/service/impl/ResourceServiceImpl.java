@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.oldhorse.shop.common.utils.AssertUtils;
 import tech.oldhorse.shop.dao.entity.ResourceDO;
-import tech.oldhorse.shop.dao.entity.RoleDO;
 import tech.oldhorse.shop.dao.entity.RoleResourceDO;
 import tech.oldhorse.shop.dao.repository.ResourceRepository;
 import tech.oldhorse.shop.dao.repository.RoleResourceRepository;
@@ -14,6 +13,7 @@ import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
 import tech.oldhorse.shop.service.ResourceService;
 import tech.oldhorse.shop.service.condition.ResourceCondition;
 import tech.oldhorse.shop.service.convert.ResourceCoreConvert;
+import tech.oldhorse.shop.service.enums.ResourceTypeEnum;
 import tech.oldhorse.shop.service.object.model.ResourceModel;
 
 import java.util.List;
@@ -33,13 +33,23 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public String create(ResourceModel resourceModel) {
-        String resourceId = idGenerator.nextStringId();
-        resourceModel.setResourceId(resourceId);
-
-        if (resourceModel.getSort() == null){
-            resourceModel.setSort(getMaxSort() + 1);
+        AssertUtils.notNull(resourceModel.getResourceType(),"资源类型不能为空");
+        if (resourceModel.getResourceType() == ResourceTypeEnum.API){
+            AssertUtils.notNull(resourceModel.getPerms(), "权限标识不能为空");
+        } else if (resourceModel.getResourceType() == ResourceTypeEnum.MENU){
+            AssertUtils.notNull(resourceModel.getUrl(), "菜单URL不能为空");
         }
 
+        if (resourceModel.getSort() == null) {
+            resourceModel.setSort(getMaxSort() + 1);
+        }
+        if (resourceModel.getParentResourceId() != null) {
+            ResourceModel parentResource = getByResourceId(resourceModel.getParentResourceId());
+            AssertUtils.notNull(parentResource, "父资源不存在");
+        }
+
+        String resourceId = idGenerator.nextStringId();
+        resourceModel.setResourceId(resourceId);
         ResourceDO resourceDO = resourceCoreConvert.model2Do(resourceModel);
         resourceRepository.save(resourceDO);
         return resourceId;
@@ -50,8 +60,14 @@ public class ResourceServiceImpl implements ResourceService {
         ResourceModel resourceInDb = getByResourceId(resourceModel.getResourceId());
         AssertUtils.notNull(resourceInDb);
 
-        if (resourceModel.getSort() == null){
+        if (resourceModel.getSort() == null) {
             resourceModel.setSort(getMaxSort() + 1);
+        }
+
+
+        if (resourceModel.getParentResourceId() != null) {
+            ResourceModel parentResource = getByResourceId(resourceModel.getParentResourceId());
+            AssertUtils.notNull(parentResource, "父资源不存在");
         }
 
         ResourceDO resourceDO = resourceCoreConvert.model2Do(resourceModel);
@@ -74,8 +90,11 @@ public class ResourceServiceImpl implements ResourceService {
         ResourceModel resourceInDb = getByResourceId(resourceId);
         AssertUtils.notNull(resourceInDb);
 
+        ResourceDO childDO = resourceRepository.lambdaQuery().eq(ResourceDO::getParentResourceId, resourceId).eq(ResourceDO::getDeletedFlag, false).one();
+        AssertUtils.isNull(childDO, "资源还有子资源，无法删除");
+
         RoleResourceDO one = roleResourceRepository.lambdaQuery().eq(RoleResourceDO::getResourceId, resourceId).one();
-        AssertUtils.isNull(one, "资源被引用，无法删除");
+        AssertUtils.isNull(one, "资源被角色引用，无法删除");
 
         ResourceDO resourceDO = new ResourceDO();
         resourceDO.setId(resourceInDb.getId());

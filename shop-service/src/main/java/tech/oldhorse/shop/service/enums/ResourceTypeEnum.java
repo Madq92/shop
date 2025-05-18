@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum UserStatusEnum {
-    ENABLE("启用"),
-    DISABLE("停用");
+public enum ResourceTypeEnum {
+    MENU("菜单"),
+    API("接口");
     private String desc;
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import tech.oldhorse.shop.common.context.WebContextHolder;
 import tech.oldhorse.shop.common.object.PageData;
 import tech.oldhorse.shop.common.object.Result;
+import tech.oldhorse.shop.common.utils.EnumUtils;
 import tech.oldhorse.shop.common.utils.PageUtil;
 import tech.oldhorse.shop.service.UserService;
 import tech.oldhorse.shop.service.condition.UserCondition;
@@ -67,8 +68,8 @@ public class UserController {
         condition.setNameLike(name);
         condition.setEmail(email);
         condition.setPhonenumber(phonenumber);
-        condition.setStatus(UserStatusEnum.getByName(status));
-        condition.setGender(UserGenderEnum.getByName(gender));
+        condition.setStatus(EnumUtils.getByName(UserStatusEnum.class, status));
+        condition.setGender(EnumUtils.getByName(UserGenderEnum.class, gender));
 
         PageData<UserModel> page = userService.pageByCondition(condition);
         return Result.success(PageUtil.makeResponse(page, userCoreConvert::model2Dto));
@@ -113,7 +114,7 @@ public class UserController {
     }
 
     @SaCheckPermission("user.role.delete")
-    @Operation(summary = "角色删除资源")
+    @Operation(summary = "用户删除角色")
     @DeleteMapping("/{userId}/role")
     public Result<Boolean> delRole(@PathVariable("userId") String userId, @RequestBody UserDelRoleReq req) {
         return Result.success(userService.delRole(userId, req));

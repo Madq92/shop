@@ -2,6 +2,7 @@ package tech.oldhorse.shop.service.object.model;
 
 import lombok.Data;
 import tech.oldhorse.shop.common.object.BaseModel;
+import tech.oldhorse.shop.service.enums.ResourceTypeEnum;
 
 @Data
 public class ResourceModel extends BaseModel {
@@ -33,7 +34,7 @@ public class ResourceModel extends BaseModel {
     /**
      * 菜单类型（MENU菜单 BUTTON按钮）
      */
-    private String resourceType;
+    private ResourceTypeEnum resourceType;
 
     /**
      * 菜单状态
