@@ -31,6 +31,7 @@ import tech.oldhorse.shop.service.convert.ResourceCoreConvert;
 import tech.oldhorse.shop.service.convert.RoleCoreConvert;
 import tech.oldhorse.shop.service.convert.UserCoreConvert;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
+import tech.oldhorse.shop.service.object.dto.UserDTO;
 import tech.oldhorse.shop.service.object.model.ResourceModel;
 import tech.oldhorse.shop.service.object.model.RoleModel;
 import tech.oldhorse.shop.service.object.model.UserModel;
@@ -194,18 +195,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserLoginInfoResp loginInfo(String userId) {
-        UserModel userModel = this.getByUserId(userId);
-
-        UserLoginInfoResp resp = new UserLoginInfoResp();
-        resp.setUser(userCoreConvert.model2Dto(userModel));
-        resp.setRoleList(roleCoreConvert.modelList2DtoList(getUserRole(userId)));
-        resp.setResourceList(resourceCoreConvert.modelList2DtoList(getUserResource(userId)));
-
-        return resp;
-    }
-
-    @Override
     public UserLoginInfoResp login(UserLoginReq req) {
         // 1.获取用户
         UserCondition condition = new UserCondition();
@@ -242,9 +231,11 @@ public class UserServiceImpl implements UserService {
         SaSession session = StpUtil.getTokenSession();
         UserLoginInfoResp resp = new UserLoginInfoResp();
         resp.setToken(session.getToken());
-        resp.setUser(userCoreConvert.model2Dto(userModel));
-        resp.setRoleList(roleCoreConvert.modelList2DtoList(getUserRole(userId)));
-        resp.setResourceList(resourceCoreConvert.modelList2DtoList(getUserResource(userId)));
+
+        UserDTO userDTO = userCoreConvert.model2Dto(userModel);
+        resp.setUser(userDTO);
+        userDTO.setRoles(roleCoreConvert.modelList2DtoList(getUserRole(userId)));
+        userDTO.setResources(resourceCoreConvert.modelList2DtoList(getUserResource(userId)));
 
         // TODO 缓存用户资源权限
         return resp;

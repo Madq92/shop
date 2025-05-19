@@ -30,8 +30,6 @@ public interface UserService {
 
     List<RoleModel> getUserRole(String userId);
 
-    UserLoginInfoResp loginInfo(String userId);
-
     UserLoginInfoResp login(UserLoginReq req);
 
     Boolean logout(String userId);

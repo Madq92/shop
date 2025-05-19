@@ -135,13 +135,6 @@ public class UserController {
         return Result.success(userService.logout(userId));
     }
 
-    @Operation(summary = "用户登录信息")
-    @GetMapping("/current-login-info")
-    public Result<UserLoginInfoResp> loginInfo() {
-        String userId = WebContextHolder.getUserId();
-        return Result.success(userService.loginInfo(userId));
-    }
-
     @SaCheckPermission("user.password.update")
     @Operation(summary = "用户更新密码")
     @PostMapping("/update-password")
