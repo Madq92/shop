@@ -36,8 +36,13 @@ public class ConfigController {
     @SaCheckPermission("config.view")
     @Operation(summary = "参数配置列表")
     @GetMapping
-    public Result<List<ConfigDTO>> list() {
+    public Result<List<ConfigDTO>> list(@RequestParam(required = false, value = "configType") String configType,
+                                        @RequestParam(required = false, value = "configKey") String configKey,
+                                        @RequestParam(required = false, value = "configName") String configName) {
         ConfigCondition condition = new ConfigCondition();
+        condition.setConfigKey(configKey);
+        condition.setConfigType(configType);
+        condition.setConfigNameLike(configName);
         List<ConfigModel> configModels = configService.listByCondition(condition);
         return Result.success(configCoreConvert.modelList2DtoList(configModels));
     }

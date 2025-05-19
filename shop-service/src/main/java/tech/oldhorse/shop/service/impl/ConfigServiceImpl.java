@@ -1,6 +1,7 @@
 package tech.oldhorse.shop.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.oldhorse.shop.common.utils.AssertUtils;
@@ -26,7 +27,12 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public List<ConfigModel> listByCondition(ConfigCondition condition) {
-        List<ConfigDO> list = configRepository.lambdaQuery().eq(ConfigDO::getDeletedFlag, false).list();
+        List<ConfigDO> list = configRepository.lambdaQuery()
+                .eq(ConfigDO::getDeletedFlag, false)
+                .eq(StringUtils.isNotBlank(condition.getConfigKey()), ConfigDO::getConfigKey, condition.getConfigKey())
+                .like(StringUtils.isNotBlank(condition.getConfigNameLike()), ConfigDO::getConfigName, condition.getConfigNameLike())
+                .eq(StringUtils.isNotBlank(condition.getConfigType()), ConfigDO::getConfigType, condition.getConfigType())
+                .list();
         return configConvert.doList2ModelList(list);
     }
 

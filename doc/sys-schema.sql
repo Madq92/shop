@@ -91,6 +91,7 @@ CREATE TABLE `role_resource`
     `id`          int         NOT NULL AUTO_INCREMENT COMMENT '主键',
     `role_id`     varchar(32) NOT NULL COMMENT '角色ID',
     `resource_id` varchar(32) NOT NULL COMMENT '资源ID',
+    `tenant_id`   varchar(32) NOT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_role_resource` (`role_id`, `resource_id`)
 ) ENGINE = InnoDB
@@ -157,9 +158,10 @@ VALUES (2, '1917553416884719616', 'user1', 'user1@oldhorse.tech', '15658175187',
 -- user_role: table
 CREATE TABLE `user_role`
 (
-    `id`      int         NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `user_id` varchar(32) NOT NULL COMMENT '用户ID',
-    `role_id` varchar(32) NOT NULL COMMENT '角色ID',
+    `id`        int         NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `user_id`   varchar(32) NOT NULL COMMENT '用户ID',
+    `role_id`   varchar(32) NOT NULL COMMENT '角色ID',
+    `tenant_id` varchar(32) NOT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_user_role` (`user_id`, `role_id`)
 ) ENGINE = InnoDB

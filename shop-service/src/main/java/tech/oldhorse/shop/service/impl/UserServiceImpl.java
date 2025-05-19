@@ -34,8 +34,6 @@ import tech.oldhorse.shop.service.enums.UserStatusEnum;
 import tech.oldhorse.shop.service.object.model.ResourceModel;
 import tech.oldhorse.shop.service.object.model.RoleModel;
 import tech.oldhorse.shop.service.object.model.UserModel;
-import tech.oldhorse.shop.service.object.request.UserAddRoleReq;
-import tech.oldhorse.shop.service.object.request.UserDelRoleReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
@@ -43,7 +41,6 @@ import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -76,6 +73,12 @@ public class UserServiceImpl implements UserService {
         userModel.setPassword(passwordEncoder.encode("123456"));
 
         userRepository.save(userCoreConvert.model2Do(userModel));
+
+        // 用户角色
+        if (CollectionUtils.isNotEmpty(userModel.getRoles())) {
+            List<UserRoleDO> list = userModel.getRoles().stream().map(roleModel -> new UserRoleDO(userId, roleModel.getRoleId())).toList();
+            userRoleRepository.saveBatch(list);
+        }
         return userId;
     }
 
@@ -86,7 +89,19 @@ public class UserServiceImpl implements UserService {
 
         UserDO userDO = userCoreConvert.model2Do(userModel);
         userDO.setId(userInDb.getId());
-        return userRepository.updateById(userDO);
+        userRepository.updateById(userDO);
+
+        // 用户角色
+        String userId = userModel.getUserId();
+        // -- 全删
+        userRoleRepository.lambdaUpdate().eq(UserRoleDO::getUserId, userId).remove();
+
+        // -- 全增
+        if (CollectionUtils.isNotEmpty(userModel.getRoles())) {
+            List<UserRoleDO> list = userModel.getRoles().stream().map(roleModel -> new UserRoleDO(userId, roleModel.getRoleId())).toList();
+            userRoleRepository.saveBatch(list);
+        }
+        return true;
     }
 
     @Override
@@ -97,7 +112,11 @@ public class UserServiceImpl implements UserService {
         UserDO userDO = new UserDO();
         userDO.setId(userInDb.getId());
         userDO.setDeletedFlag(true);
-        return userRepository.updateById(userDO);
+        userRepository.updateById(userDO);
+
+        // 用户角色
+        userRoleRepository.lambdaUpdate().eq(UserRoleDO::getUserId, userId).remove();
+        return true;
     }
 
     @Override
@@ -146,7 +165,7 @@ public class UserServiceImpl implements UserService {
         List<String> roleIds = userRoleDOS.stream().map(UserRoleDO::getRoleId).toList();
 
         ResourceCondition resourceCondition = new ResourceCondition();
-        resourceCondition.setResourceIds(roleIds);
+        resourceCondition.setRoleIds(roleIds);
         return resourceService.listByCondition(resourceCondition);
     }
 
@@ -161,29 +180,6 @@ public class UserServiceImpl implements UserService {
         RoleCondition roleCondition = new RoleCondition();
         roleCondition.setRoleIds(userRoleDOS.stream().map(UserRoleDO::getRoleId).toList());
         return roleService.listByCondition(roleCondition);
-    }
-
-    @Override
-    public Boolean addRole(String userId, UserAddRoleReq req) {
-        UserModel user = getByUserId(userId);
-        AssertUtils.notNull(user, "用户不存在");
-
-        RoleCondition roleCondition = new RoleCondition();
-        roleCondition.setRoleIds(req.getRoleIds());
-        List<RoleModel> roleModels = roleService.listByCondition(roleCondition);
-        AssertUtils.notNull(roleModels, "角色不存在");
-
-        List<UserRoleDO> list = roleModels.stream().map(roleModel -> new UserRoleDO(userId, roleModel.getRoleId())).toList();
-        return userRoleRepository.saveBatch(list);
-    }
-
-    @Override
-    public Boolean delRole(String userId, UserDelRoleReq req) {
-        List<UserRoleDO> list = userRoleRepository.lambdaQuery().eq(UserRoleDO::getUserId, userId).in(UserRoleDO::getRoleId, req.getRoleIds()).list();
-        if (CollectionUtils.isEmpty(list)) {
-            return true;
-        }
-        return userRoleRepository.removeBatchByIds(list.stream().map(UserRoleDO::getId).collect(Collectors.toList()));
     }
 
     private LambdaQueryChainWrapper<UserDO> buildLambdaQuery(UserCondition condition) {

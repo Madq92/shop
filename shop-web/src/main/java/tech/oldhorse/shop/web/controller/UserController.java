@@ -24,8 +24,6 @@ import tech.oldhorse.shop.service.object.dto.UserDTO;
 import tech.oldhorse.shop.service.object.model.ResourceModel;
 import tech.oldhorse.shop.service.object.model.RoleModel;
 import tech.oldhorse.shop.service.object.model.UserModel;
-import tech.oldhorse.shop.service.object.request.UserAddRoleReq;
-import tech.oldhorse.shop.service.object.request.UserDelRoleReq;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
@@ -104,20 +102,6 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public Result<Boolean> delete(@PathVariable("userId") String userId) {
         return Result.success(userService.delete(userId));
-    }
-
-    @SaCheckPermission("user.role.add")
-    @Operation(summary = "用户添加角色")
-    @PostMapping("/{userId}/role")
-    public Result<Boolean> addRole(@PathVariable("userId") String userId, @RequestBody UserAddRoleReq req) {
-        return Result.success(userService.addRole(userId, req));
-    }
-
-    @SaCheckPermission("user.role.delete")
-    @Operation(summary = "用户删除角色")
-    @DeleteMapping("/{userId}/role")
-    public Result<Boolean> delRole(@PathVariable("userId") String userId, @RequestBody UserDelRoleReq req) {
-        return Result.success(userService.delRole(userId, req));
     }
 
     @SaCheckPermission("user.role.view")
