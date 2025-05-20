@@ -1,7 +1,6 @@
 package tech.oldhorse.shop.web.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,7 @@ import tech.oldhorse.shop.service.enums.UserGenderEnum;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
 import tech.oldhorse.shop.service.object.dto.UserDTO;
 import tech.oldhorse.shop.service.object.model.UserModel;
-import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
-import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
 
 /**
  * <p>
@@ -32,7 +29,7 @@ import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
  * @author mika
  * @since 2025-04-21
  */
-@Tag(name = "用户管理", description = "用户的增删改查操作，登录登出")
+@Tag(name = "用户管理", description = "用户的增删改查操作")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -96,20 +93,6 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public Result<Boolean> delete(@PathVariable("userId") String userId) {
         return Result.success(userService.delete(userId));
-    }
-
-    @Operation(summary = "用户登录")
-    @PostMapping("/login")
-    @SaIgnore
-    public Result<UserLoginInfoResp> login(@RequestBody UserLoginReq req) {
-        return Result.success(userService.login(req));
-    }
-
-    @Operation(summary = "用户登出")
-    @PostMapping("/logout")
-    public Result<Boolean> logout() {
-        String userId = WebContextHolder.getUserId();
-        return Result.success(userService.logout(userId));
     }
 
     @SaCheckPermission("user.password.update")
