@@ -18,17 +18,11 @@ import tech.oldhorse.shop.service.convert.RoleCoreConvert;
 import tech.oldhorse.shop.service.convert.UserCoreConvert;
 import tech.oldhorse.shop.service.enums.UserGenderEnum;
 import tech.oldhorse.shop.service.enums.UserStatusEnum;
-import tech.oldhorse.shop.service.object.dto.ResourceDTO;
-import tech.oldhorse.shop.service.object.dto.RoleDTO;
 import tech.oldhorse.shop.service.object.dto.UserDTO;
-import tech.oldhorse.shop.service.object.model.ResourceModel;
-import tech.oldhorse.shop.service.object.model.RoleModel;
 import tech.oldhorse.shop.service.object.model.UserModel;
 import tech.oldhorse.shop.service.object.request.UserLoginReq;
 import tech.oldhorse.shop.service.object.request.UserUpdatePasswordReq;
 import tech.oldhorse.shop.service.object.response.UserLoginInfoResp;
-
-import java.util.List;
 
 /**
  * <p>
@@ -102,23 +96,6 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public Result<Boolean> delete(@PathVariable("userId") String userId) {
         return Result.success(userService.delete(userId));
-    }
-
-    @SaCheckPermission("user.role.view")
-    @Operation(summary = "用户角色")
-    @GetMapping("/{userId}/role")
-    public Result<List<RoleDTO>> userRole(@PathVariable("userId") String userId) {
-        List<RoleModel> roleModels = userService.getUserRole(userId);
-        return Result.success(roleCoreConvert.modelList2DtoList(roleModels));
-    }
-
-
-    @SaCheckPermission("user.resource.view")
-    @Operation(summary = "用户资源")
-    @GetMapping("/{userId}/resource")
-    public Result<List<ResourceDTO>> userResource(@PathVariable("userId") String userId) {
-        List<ResourceModel> resourceModels = userService.getUserResource(userId);
-        return Result.success(resourceCoreConvert.modelList2DtoList(resourceModels));
     }
 
     @Operation(summary = "用户登录")

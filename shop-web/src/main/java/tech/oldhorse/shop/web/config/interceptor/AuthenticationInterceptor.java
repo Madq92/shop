@@ -1,7 +1,6 @@
-package tech.oldhorse.shop.web.interceptor;
+package tech.oldhorse.shop.web.config.interceptor;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.strategy.SaStrategy;

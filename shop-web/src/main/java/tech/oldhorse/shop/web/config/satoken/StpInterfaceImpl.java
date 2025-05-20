@@ -1,7 +1,8 @@
-package tech.oldhorse.shop.web.satoken;
+package tech.oldhorse.shop.web.config.satoken;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * 自定义权限加载接口实现类
  */
+@Slf4j
 @Component
 public class StpInterfaceImpl implements StpInterface {
 
@@ -21,11 +23,10 @@ public class StpInterfaceImpl implements StpInterface {
     /**
      * 返回一个账号所拥有的权限码集合
      */
-    @SuppressWarnings("unchecked")
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        List<String> permCodeList = Lists.newArrayList("*");
-        return permCodeList;
+        log.info("getPermissionList loginId:{}, loginType:{}", loginId, loginType);
+        return Lists.newArrayList("*");
     }
 
     /**
@@ -33,6 +34,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
+        log.info("getRoleList loginId:{}, loginType:{}", loginId, loginType);
         return new ArrayList<>();
     }
 }

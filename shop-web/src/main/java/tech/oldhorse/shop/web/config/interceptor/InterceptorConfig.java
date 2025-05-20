@@ -1,4 +1,4 @@
-package tech.oldhorse.shop.web.interceptor;
+package tech.oldhorse.shop.web.config.interceptor;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

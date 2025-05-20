@@ -25,6 +25,7 @@ CREATE TABLE `oper_log`
     `business_type`  int                   DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
     `method`         varchar(256)          DEFAULT '' COMMENT '方法名称',
     `request_method` varchar(10)           DEFAULT '' COMMENT '请求方式',
+    `trace_id`       varchar(32)  NOT NULL DEFAULT '' COMMENT '链路ID',
     `operator_type`  int                   DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
     `oper_user_id`   varchar(32)  NOT NULL COMMENT '操作用户ID',
     `oper_use_name`  varchar(128) NOT NULL COMMENT '操作用户名称',

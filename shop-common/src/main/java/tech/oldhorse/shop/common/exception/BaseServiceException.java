@@ -8,7 +8,7 @@ import tech.oldhorse.shop.common.constants.ErrorCodeEnum;
  */
 @Getter
 public class BaseServiceException extends RuntimeException {
-    private ErrorCodeEnum errorCodeEnum;
+    private final ErrorCodeEnum errorCodeEnum;
 
     public BaseServiceException(String msg) {
         super(msg);
@@ -18,5 +18,10 @@ public class BaseServiceException extends RuntimeException {
     public BaseServiceException(ErrorCodeEnum errorCodeEnum, String msg) {
         super(msg);
         this.errorCodeEnum = errorCodeEnum;
+    }
+
+    public BaseServiceException(String msg, Throwable cause) {
+        super(msg, cause);
+        this.errorCodeEnum = ErrorCodeEnum.SERVER_INTERNAL_ERROR;
     }
 }

@@ -27,6 +27,10 @@ public class Result<T> {
      */
     private String errorMessage = "";
     /**
+     * 链路ID
+     */
+    private String traceId = "";
+    /**
      * 实际数据。
      */
     private T data = null;

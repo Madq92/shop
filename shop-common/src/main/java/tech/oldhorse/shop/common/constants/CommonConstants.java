@@ -37,6 +37,10 @@ public class CommonConstants {
      */
     public static final String HTTP_REQUEST_ID = "requestId";
     /**
+     * 请求头跟踪id名。
+     */
+    public static final String HTTP_HEADER_TRACE_ID = "traceId";
+    /**
      * 重要说明：该值为项目生成后的缺省密钥，仅为使用户可以快速上手并跑通流程。
      * 在实际的应用中，一定要为不同的项目或服务，自行生成公钥和私钥，并将 PRIVATE_KEY 的引用改为服务的配置项。
      * 密钥的生成方式，可通过执行tech.oldhorse.shop.common.utils.RsaUtil类的main函数动态生成。
@@ -49,4 +53,7 @@ public class CommonConstants {
      * 前端密码是否加密
      */
     public static final Boolean FRONT_PASSWORD_ENCODE = false;
+    public static final String SESSION_USER_KEY = "USER";
+    public static final String SESSION_USER_ROLE_KEY = "USER_ROLE";
+    public static final String SESSION_USER_RESOURCE_KEY = "USER_RESOURCE";
 }

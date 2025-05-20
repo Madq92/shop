@@ -1,6 +1,7 @@
 package tech.oldhorse.shop.service.impl;
 
 import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -227,17 +228,25 @@ public class UserServiceImpl implements UserService {
 
         // 4.验证成功，生成token，缓存资源权限
         String userId = userModel.getUserId();
+        List<RoleModel> userRoleList = getUserRole(userId);
+        List<ResourceModel> userResourceList = getUserResource(userId);
+
         StpUtil.login(userId, CommonConstants.TOKEN_TIMEOUT);
-        SaSession session = StpUtil.getTokenSession();
+        SaSession session = StpUtil.getSession();
+        session.set(CommonConstants.SESSION_USER_KEY, userModel);
+        session.set(CommonConstants.SESSION_USER_ROLE_KEY, userRoleList.stream().map(RoleModel::getRoleKey).filter(StringUtils::isNotBlank).toList());
+        session.set(CommonConstants.SESSION_USER_RESOURCE_KEY, userResourceList.stream().map(ResourceModel::getPerms).filter(StringUtils::isNotBlank).toList());
+
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         UserLoginInfoResp resp = new UserLoginInfoResp();
-        resp.setToken(session.getToken());
+        resp.setTokenName(tokenInfo.getTokenName());
+        resp.setTokenValue(tokenInfo.getTokenValue());
 
         UserDTO userDTO = userCoreConvert.model2Dto(userModel);
+        userDTO.setRoles(roleCoreConvert.modelList2DtoList(userRoleList));
+        userDTO.setResources(resourceCoreConvert.modelList2DtoList(userResourceList));
         resp.setUser(userDTO);
-        userDTO.setRoles(roleCoreConvert.modelList2DtoList(getUserRole(userId)));
-        userDTO.setResources(resourceCoreConvert.modelList2DtoList(getUserResource(userId)));
 
-        // TODO 缓存用户资源权限
         return resp;
     }
 

@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+
 /**
  * <p>
  * 操作日志记录
@@ -47,6 +48,11 @@ public class OperLogDO {
      * 请求方式
      */
     private String requestMethod;
+
+    /**
+     * 链路ID
+     */
+    private String traceId;
 
     /**
      * 操作类别（0其它 1后台用户 2手机端用户）

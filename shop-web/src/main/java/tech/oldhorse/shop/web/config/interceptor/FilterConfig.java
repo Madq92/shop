@@ -1,4 +1,4 @@
-package tech.oldhorse.shop.web.interceptor;
+package tech.oldhorse.shop.web.config.interceptor;
 
 import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

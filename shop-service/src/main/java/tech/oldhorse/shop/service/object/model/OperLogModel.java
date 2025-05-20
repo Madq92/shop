@@ -35,6 +35,11 @@ public class OperLogModel {
     private String requestMethod;
 
     /**
+     * 链路ID
+     */
+    private String traceId;
+
+    /**
      * 操作类别（0其它 1后台用户 2手机端用户）
      */
     private Integer operatorType;

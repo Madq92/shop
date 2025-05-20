@@ -1,4 +1,4 @@
-package tech.oldhorse.shop.web.advice;
+package tech.oldhorse.shop.web.config.advice;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
