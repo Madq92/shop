@@ -128,7 +128,7 @@ public class RoleServiceImpl implements RoleService {
         RoleModel roleInDb = getByRoleId(roleId);
         AssertUtils.notNull(roleInDb);
 
-        UserRoleDO one = userRoleRepository.lambdaQuery().eq(UserRoleDO::getRoleId, roleId).one();
+        UserRoleDO one = userRoleRepository.lambdaQuery().eq(UserRoleDO::getRoleId, roleId).last("limit 1").one();
         AssertUtils.isNull(one, "角色被用户引用，无法删除");
 
         RoleDO update = new RoleDO();

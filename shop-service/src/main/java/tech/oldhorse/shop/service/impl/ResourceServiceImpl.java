@@ -33,10 +33,10 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public String create(ResourceModel resourceModel) {
-        AssertUtils.notNull(resourceModel.getResourceType(),"资源类型不能为空");
-        if (resourceModel.getResourceType() == ResourceTypeEnum.API){
+        AssertUtils.notNull(resourceModel.getResourceType(), "资源类型不能为空");
+        if (resourceModel.getResourceType() == ResourceTypeEnum.API) {
             AssertUtils.notNull(resourceModel.getPerms(), "权限标识不能为空");
-        } else if (resourceModel.getResourceType() == ResourceTypeEnum.MENU){
+        } else if (resourceModel.getResourceType() == ResourceTypeEnum.MENU) {
             AssertUtils.notNull(resourceModel.getUrl(), "菜单URL不能为空");
         }
 
@@ -90,10 +90,10 @@ public class ResourceServiceImpl implements ResourceService {
         ResourceModel resourceInDb = getByResourceId(resourceId);
         AssertUtils.notNull(resourceInDb);
 
-        ResourceDO childDO = resourceRepository.lambdaQuery().eq(ResourceDO::getParentResourceId, resourceId).eq(ResourceDO::getDeletedFlag, false).one();
+        ResourceDO childDO = resourceRepository.lambdaQuery().eq(ResourceDO::getParentResourceId, resourceId).eq(ResourceDO::getDeletedFlag, false).last("limit 1").one();
         AssertUtils.isNull(childDO, "资源还有子资源，无法删除");
 
-        RoleResourceDO one = roleResourceRepository.lambdaQuery().eq(RoleResourceDO::getResourceId, resourceId).one();
+        RoleResourceDO one = roleResourceRepository.lambdaQuery().eq(RoleResourceDO::getResourceId, resourceId).last("limit 1").one();
         AssertUtils.isNull(one, "资源被角色引用，无法删除");
 
         ResourceDO resourceDO = new ResourceDO();
