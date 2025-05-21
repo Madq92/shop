@@ -45,6 +45,13 @@ public class Result<T> {
         this.errorMessage = errorMessage;
     }
 
+    public Result(String errorCode, String errorMessage, String traceId) {
+        this.success = false;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+        this.traceId = traceId;
+    }
+
     /**
      * 根据参数errorCode是否为空，判断创建成功对象还是错误对象。
      * 如果返回错误对象，errorCode 和 errorMessage 分别取自于参数 errorCode 和参数 errorMessage。
@@ -91,8 +98,18 @@ public class Result<T> {
         return new Result<>(errorCode, errorMessage);
     }
 
+    public static <T> Result<T> error(String errorCode, String errorMessage, String traceId) {
+        return new Result<>(errorCode, errorMessage, traceId);
+    }
+
     public static <T> Result<T> error(ErrorCodeEnum errorCodeEnum) {
         return new Result<>(errorCodeEnum.name(), errorCodeEnum.getErrorMessage());
+    }
+
+    public static <T> Result<T> error(ErrorCodeEnum errorCodeEnum, String traceId) {
+        Result<T> result = new Result<T>(errorCodeEnum.name(), errorCodeEnum.getErrorMessage());
+        result.setTraceId(traceId);
+        return result;
     }
 
     public static <T, M> Result<T> success(M model, Function<M, T> mapping) {

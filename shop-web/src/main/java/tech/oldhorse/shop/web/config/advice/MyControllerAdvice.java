@@ -8,6 +8,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
+import tech.oldhorse.shop.common.constants.CommonConstants;
 import tech.oldhorse.shop.common.constants.ErrorCodeEnum;
 import tech.oldhorse.shop.common.exception.BaseParamException;
 import tech.oldhorse.shop.common.exception.BaseServiceException;
@@ -34,7 +35,8 @@ public class MyControllerAdvice {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<Result<Void>> exceptionHandle(Exception ex, HttpServletRequest request) {
         log.error("Unhandled exception from URL [{}]", request.getRequestURI(), ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.error(ErrorCodeEnum.SERVER_INTERNAL_ERROR.name(), ex.getMessage()));
+        String traceId = (String) request.getAttribute(CommonConstants.HTTP_HEADER_TRACE_ID);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.error(ErrorCodeEnum.SERVER_INTERNAL_ERROR.name(), ex.getMessage(), traceId));
     }
 
     /**
@@ -43,7 +45,8 @@ public class MyControllerAdvice {
     @ExceptionHandler(value = BaseParamException.class)
     public ResponseEntity<Result<Void>> baseParamExceptionHandle(BaseParamException ex, HttpServletRequest request) {
         log.error("BaseParamException exception from URL [{}]", request.getRequestURI(), ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Result.error(ex.getErrorCodeEnum().name(), ex.getMessage()));
+        String traceId = (String) request.getAttribute(CommonConstants.HTTP_HEADER_TRACE_ID);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Result.error(ex.getErrorCodeEnum().name(), ex.getMessage(), traceId));
     }
 
     /**
@@ -52,7 +55,8 @@ public class MyControllerAdvice {
     @ExceptionHandler(value = UnauthorizedException.class)
     public ResponseEntity<Result<Void>> unauthorizedExceptionHandle(UnauthorizedException ex, HttpServletRequest request) {
         log.error("UnauthorizedException exception from URL [{}]", request.getRequestURI(), ex);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Result.error(ex.getErrorCodeEnum().name(), ex.getMessage()));
+        String traceId = (String) request.getAttribute(CommonConstants.HTTP_HEADER_TRACE_ID);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Result.error(ex.getErrorCodeEnum().name(), ex.getMessage(), traceId));
     }
 
     /**
@@ -61,7 +65,8 @@ public class MyControllerAdvice {
     @ExceptionHandler(value = ForbiddenException.class)
     public ResponseEntity<Result<Void>> forbiddenExceptionHandle(ForbiddenException ex, HttpServletRequest request) {
         log.error("ForbiddenException exception from URL [{}]", request.getRequestURI(), ex);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.error(ex.getErrorCodeEnum().name(), ex.getMessage()));
+        String traceId = (String) request.getAttribute(CommonConstants.HTTP_HEADER_TRACE_ID);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.error(ex.getErrorCodeEnum().name(), ex.getMessage(), traceId));
     }
 
     /**
@@ -70,6 +75,7 @@ public class MyControllerAdvice {
     @ExceptionHandler(value = BaseServiceException.class)
     public ResponseEntity<Result<Void>> baseServiceExceptionHandle(BaseServiceException ex, HttpServletRequest request) {
         log.error("BaseServiceException exception from URL [{}]", request.getRequestURI(), ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.error(ex.getErrorCodeEnum().name(), ex.getMessage()));
+        String traceId = (String) request.getAttribute(CommonConstants.HTTP_HEADER_TRACE_ID);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.error(ex.getErrorCodeEnum().name(), ex.getMessage(), traceId));
     }
 }

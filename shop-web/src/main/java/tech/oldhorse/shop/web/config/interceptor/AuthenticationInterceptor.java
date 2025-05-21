@@ -9,13 +9,16 @@ import cn.hutool.json.JSONUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import tech.oldhorse.shop.common.constants.CommonConstants;
 import tech.oldhorse.shop.common.constants.ErrorCodeEnum;
 import tech.oldhorse.shop.common.context.WebContext;
 import tech.oldhorse.shop.common.context.WebContextHolder;
 import tech.oldhorse.shop.common.object.Result;
+import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,6 +29,11 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 public class AuthenticationInterceptor implements HandlerInterceptor {
+    private final IdGeneratorWrapper idGenerator;
+
+    public AuthenticationInterceptor(IdGeneratorWrapper idGenerator) {
+        this.idGenerator = idGenerator;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -33,6 +41,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
+
+        String traceId = this.getTraceId(request);
         Method method = ((HandlerMethod) handler).getMethod();
         //如果没有登录则直接交给satoken注解去验证。
         if (!StpUtil.isLogin()) {
@@ -46,13 +56,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 // 跳过swagger的请求
                 return true;
             }
-            responseError(response, HttpServletResponse.SC_UNAUTHORIZED, Result.error(ErrorCodeEnum.UNAUTHORIZED_EXCEPTION));
+            responseError(response, HttpServletResponse.SC_UNAUTHORIZED, Result.error(ErrorCodeEnum.UNAUTHORIZED_EXCEPTION, traceId));
             return false;
         }
         //对于已经登录的用户一定存在session对象。
         SaSession session = StpUtil.getTokenSession();
         if (session == null) {
-            responseError(response, HttpServletResponse.SC_UNAUTHORIZED, Result.error(ErrorCodeEnum.UNAUTHORIZED_EXCEPTION));
+            responseError(response, HttpServletResponse.SC_UNAUTHORIZED, Result.error(ErrorCodeEnum.UNAUTHORIZED_EXCEPTION, traceId));
             return false;
         }
 
@@ -91,5 +101,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
         WebContextHolder.cleanThreadLocal();
+    }
+
+    private String getTraceId(HttpServletRequest request) {
+        // 获取请求流水号。
+        // 对于微服务系统，为了保证traceId在全调用链的唯一性，因此在网关的过滤器中创建了该值。
+        String traceId = request.getHeader(CommonConstants.HTTP_HEADER_TRACE_ID);
+        if (StringUtils.isBlank(traceId)) {
+            traceId = idGenerator.nextStringId();
+        }
+        return traceId;
     }
 }
