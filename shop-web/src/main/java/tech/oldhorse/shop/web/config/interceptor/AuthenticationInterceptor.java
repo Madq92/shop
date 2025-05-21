@@ -1,6 +1,7 @@
 package tech.oldhorse.shop.web.config.interceptor;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.exception.SaTokenException;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.strategy.SaStrategy;
@@ -71,13 +72,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         webContext.setUserId(userId);
         WebContextHolder.setWebContext(webContext);
 
-//        try {
-//            //执行基于stoken的注解鉴权。
-//            SaStrategy.instance.checkMethodAnnotation.accept(method);
-//        } catch (SaTokenException e) {
-//            responseError(response, HttpServletResponse.SC_FORBIDDEN, Result.error(ErrorCodeEnum.NO_ACCESS_PERMISSION));
-//            return false;
-//        }
+        try {
+            //执行基于stoken的注解鉴权。
+            SaStrategy.instance.checkMethodAnnotation.accept(method);
+        } catch (SaTokenException e) {
+            responseError(response, HttpServletResponse.SC_FORBIDDEN, Result.error(ErrorCodeEnum.NO_ACCESS_PERMISSION, traceId));
+            return false;
+        }
         return true;
     }
 

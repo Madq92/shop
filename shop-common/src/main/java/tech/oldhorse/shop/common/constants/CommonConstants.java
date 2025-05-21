@@ -56,4 +56,9 @@ public class CommonConstants {
     public static final String SESSION_USER_KEY = "USER";
     public static final String SESSION_USER_ROLE_KEY = "USER_ROLE";
     public static final String SESSION_USER_RESOURCE_KEY = "USER_RESOURCE";
+    public static final String USER_PERM_CACHE_KEY_FORMAT = "CACHE:USER:PERM:%s:%s";
+
+    public static String getUserPermCacheKey(Object loginId, String loginType) {
+        return String.format(USER_PERM_CACHE_KEY_FORMAT, loginId, loginType);
+    }
 }
