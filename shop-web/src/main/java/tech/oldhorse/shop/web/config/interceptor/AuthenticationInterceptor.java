@@ -43,7 +43,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        WebContext webContext = new WebContext();
+        WebContextHolder.setWebContext(webContext);
+
         String traceId = this.getTraceId(request);
+        webContext.setTraceId(traceId);
         Method method = ((HandlerMethod) handler).getMethod();
         //如果没有登录则直接交给satoken注解去验证。
         if (!StpUtil.isLogin()) {
@@ -68,9 +72,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
 
         String userId = StpUtil.getLoginIdAsString();
-        WebContext webContext = new WebContext();
         webContext.setUserId(userId);
-        WebContextHolder.setWebContext(webContext);
 
         try {
             //执行基于stoken的注解鉴权。

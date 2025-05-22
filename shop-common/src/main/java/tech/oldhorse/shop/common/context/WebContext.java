@@ -13,6 +13,8 @@ public class WebContext {
 
     private String userId;
 
+    private String traceId;
+
     /**
      * 上下文初始化时间
      */
