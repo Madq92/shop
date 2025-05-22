@@ -67,6 +67,103 @@ CREATE TABLE `resource`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='资源表';
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (1, '1924355073995968512', '基础设置', null, 1, '/sys', 'MENU', 0, null, '', '0', 0,
+        '2025-05-19 06:42:57.102065', '2025-05-19 06:43:59.164685');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (2, '1924355166526509056', '用户管理', '1924355073995968512', 2, '/sys/user', 'MENU', 0, null, '', '0', 0,
+        '2025-05-19 06:43:19.155248', '2025-05-19 06:43:59.149860');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (3, '1924355434043412480', '角色管理', '1924355073995968512', 3, '/sys/role', 'MENU', 0, null, '', '0', 0,
+        '2025-05-19 06:44:22.938386', '2025-05-19 06:44:22.938386');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (4, '1924355512502063104', '文档', null, 4, '/doc', 'MENU', 0, null, '', '0', 0, '2025-05-19 06:44:41.641629',
+        '2025-05-19 06:44:41.641629');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (5, '1924355591820546048', '用户创建', '1924355166526509056', 5, '', 'API', 0, 'user.create', '', '0', 0,
+        '2025-05-19 06:45:00.553057', '2025-05-21 09:00:31.859692');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (6, '1924355675312361472', '用户编辑', '1924355166526509056', 6, '', 'API', 0, 'user.update', '', '0', 0,
+        '2025-05-19 06:45:20.460777', '2025-05-21 09:00:25.582645');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (7, '1925113776403648512', '用户查看', '1924355166526509056', 7, '', 'API', 0, 'user.view', '', '0', 0,
+        '2025-05-21 08:57:45.861346', '2025-05-21 08:57:45.861346');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (8, '1925113955643035648', '用户删除', '1924355166526509056', 8, '', 'API', 0, 'user.delete', '', '0', 0,
+        '2025-05-21 08:58:28.578256', '2025-05-21 08:58:28.578256');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (9, '1925114111327211520', '角色查看', '1924355434043412480', 9, '', 'API', 0, 'role.view', '', '0', 0,
+        '2025-05-21 08:59:05.695525', '2025-05-21 08:59:05.695525');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (10, '1925114209473925120', '角色创建', '1924355434043412480', 10, '', 'API', 0, 'role.create', '', '0', 0,
+        '2025-05-21 08:59:29.095848', '2025-05-21 08:59:29.095848');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (11, '1925114278658969600', '角色编辑', '1924355434043412480', 11, '', 'API', 0, 'role.update', '', '0', 0,
+        '2025-05-21 08:59:45.591201', '2025-05-21 08:59:45.591201');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (12, '1925114400880988160', '角色删除', '1924355434043412480', 12, '', 'API', 0, 'role.delete', '', '0', 0,
+        '2025-05-21 09:00:14.729861', '2025-05-21 09:00:14.729861');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (13, '1925114578073554944', '资源管理', '1924355073995968512', 13, '/resource', 'MENU', 0, null, '', '0', 0,
+        '2025-05-21 09:00:56.978400', '2025-05-21 09:00:56.978400');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (14, '1925114666363654144', '资源查看', '1925114578073554944', 14, '', 'API', 0, 'resource.view', '', '0', 0,
+        '2025-05-21 09:01:18.026597', '2025-05-21 09:01:18.026597');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (15, '1925114726145069056', '资源创建', '1925114578073554944', 15, '', 'API', 0, 'resource.create', '', '0', 0,
+        '2025-05-21 09:01:32.278789', '2025-05-21 09:01:32.278789');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (16, '1925114813294317568', '资源编辑', '1925114578073554944', 16, '', 'API', 0, 'resource.update', '', '0', 0,
+        '2025-05-21 09:01:53.060449', '2025-05-21 09:01:53.060449');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (17, '1925114866482286592', '资源删除', '1925114578073554944', 17, '', 'API', 0, 'resource.delete', '', '0', 0,
+        '2025-05-21 09:02:05.736819', '2025-05-21 09:02:05.736819');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (18, '1925114976524046336', '操作日志管理', '1924355073995968512', 18, '/oper-log', 'MENU', 0, null, '', '0', 0,
+        '2025-05-21 09:02:31.973720', '2025-05-21 09:02:31.973720');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (19, '1925115075111161856', '操作日志查看', '1925114976524046336', 19, '', 'API', 0, 'operLog.view', '', '0', 0,
+        '2025-05-21 09:02:55.479213', '2025-05-21 09:02:55.479213');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (20, '1925115273099087872', '参数配置管理', '1924355073995968512', 20, '/config', 'MENU', 0, null, '', '0', 0,
+        '2025-05-21 09:03:42.682419', '2025-05-21 09:03:42.682419');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (21, '1925115341730484224', '参数配置列表', '1925115273099087872', 21, '', 'API', 0, 'config.view', '', '0', 0,
+        '2025-05-21 09:03:59.045938', '2025-05-21 09:03:59.045938');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (22, '1925115435666116608', '参数配置创建', '1925115273099087872', 22, '', 'API', 0, 'config.create', '', '0', 0,
+        '2025-05-21 09:04:21.442703', '2025-05-21 09:04:21.442703');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (23, '1925115500426170368', '参数配置编辑', '1925115273099087872', 23, '', 'API', 0, 'config.update', '', '0', 0,
+        '2025-05-21 09:04:36.883113', '2025-05-21 09:04:36.883113');
+INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
+                           icon, tenant_id, deleted_flag, create_time, update_time)
+VALUES (24, '1925115558752161792', '参数配置删除', '1925115273099087872', 24, '', 'API', 0, 'config.delete', '', '0', 0,
+        '2025-05-21 09:04:50.788720', '2025-05-21 09:04:50.788720');
+
 
 -- role: table
 CREATE TABLE `role`
@@ -85,6 +182,13 @@ CREATE TABLE `role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='角色表';
+INSERT INTO shop.role (id, role_id, role_name, role_key, sort, tenant_id, deleted_flag, create_time, update_time)
+VALUES (1, '1924342459056263168', 'admin', 'admin', 1, '0', 0, '2025-05-19 05:52:49.516578',
+        '2025-05-19 05:52:49.516578');
+INSERT INTO shop.role (id, role_id, role_name, role_key, sort, tenant_id, deleted_flag, create_time, update_time)
+VALUES (2, '1924342511304708096', 'user', 'user', 2, '0', 0, '2025-05-19 05:53:01.935491',
+        '2025-05-19 05:53:01.935491');
+
 
 -- role_resource: table
 CREATE TABLE `role_resource`
@@ -98,6 +202,58 @@ CREATE TABLE `role_resource`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='角色和资源关联表';
+
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (7, '1924342511304708096', '1924355512502063104', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (14, '1924342459056263168', '1924355073995968512', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (15, '1924342459056263168', '1924355166526509056', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (16, '1924342459056263168', '1924355434043412480', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (17, '1924342459056263168', '1925114578073554944', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (18, '1924342459056263168', '1925114976524046336', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (19, '1924342459056263168', '1925115273099087872', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (20, '1924342459056263168', '1924355591820546048', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (21, '1924342459056263168', '1924355675312361472', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (22, '1924342459056263168', '1925113776403648512', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (23, '1924342459056263168', '1925113955643035648', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (24, '1924342459056263168', '1925114111327211520', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (25, '1924342459056263168', '1925114209473925120', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (26, '1924342459056263168', '1925114278658969600', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (27, '1924342459056263168', '1925114400880988160', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (28, '1924342459056263168', '1925114666363654144', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (29, '1924342459056263168', '1925114726145069056', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (30, '1924342459056263168', '1925114813294317568', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (31, '1924342459056263168', '1925114866482286592', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (32, '1924342459056263168', '1925115075111161856', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (33, '1924342459056263168', '1925115341730484224', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (34, '1924342459056263168', '1925115435666116608', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (35, '1924342459056263168', '1925115500426170368', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (36, '1924342459056263168', '1925115558752161792', '0');
+INSERT INTO shop.role_resource (id, role_id, resource_id, tenant_id)
+VALUES (37, '1924342459056263168', '1924355512502063104', '0');
+
 
 -- tenant: table
 CREATE TABLE `tenant`
@@ -168,4 +324,12 @@ CREATE TABLE `user_role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户和角色关联表';
+
+INSERT INTO shop.user_role (id, user_id, role_id, tenant_id)
+VALUES (1, '1917552025285955584', '1924342459056263168', '0');
+INSERT INTO shop.user_role (id, user_id, role_id, tenant_id)
+VALUES (2, '1917552025285955584', '1924342511304708096', '0');
+INSERT INTO shop.user_role (id, user_id, role_id, tenant_id)
+VALUES (6, '1917553416884719616', '1924342511304708096', '0');
+
 
