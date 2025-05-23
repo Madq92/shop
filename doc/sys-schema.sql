@@ -117,7 +117,7 @@ VALUES (12, '1925114400880988160', '角色删除', '1924355434043412480', 12, ''
         '2025-05-21 09:00:14.729861', '2025-05-21 09:00:14.729861');
 INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
                            icon, tenant_id, deleted_flag, create_time, update_time)
-VALUES (13, '1925114578073554944', '资源管理', '1924355073995968512', 13, '/resource', 'MENU', 0, null, '', '0', 0,
+VALUES (13, '1925114578073554944', '资源管理', '1924355073995968512', 13, '/sys/resource', 'MENU', 0, null, '', '0', 0,
         '2025-05-21 09:00:56.978400', '2025-05-21 09:00:56.978400');
 INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
                            icon, tenant_id, deleted_flag, create_time, update_time)
@@ -137,7 +137,8 @@ VALUES (17, '1925114866482286592', '资源删除', '1925114578073554944', 17, ''
         '2025-05-21 09:02:05.736819', '2025-05-21 09:02:05.736819');
 INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
                            icon, tenant_id, deleted_flag, create_time, update_time)
-VALUES (18, '1925114976524046336', '操作日志管理', '1924355073995968512', 18, '/oper-log', 'MENU', 0, null, '', '0', 0,
+VALUES (18, '1925114976524046336', '操作日志管理', '1924355073995968512', 18, '/sys/oper-log', 'MENU', 0, null, '', '0',
+        0,
         '2025-05-21 09:02:31.973720', '2025-05-21 09:02:31.973720');
 INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
                            icon, tenant_id, deleted_flag, create_time, update_time)
@@ -145,7 +146,8 @@ VALUES (19, '1925115075111161856', '操作日志查看', '1925114976524046336', 
         '2025-05-21 09:02:55.479213', '2025-05-21 09:02:55.479213');
 INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
                            icon, tenant_id, deleted_flag, create_time, update_time)
-VALUES (20, '1925115273099087872', '参数配置管理', '1924355073995968512', 20, '/config', 'MENU', 0, null, '', '0', 0,
+VALUES (20, '1925115273099087872', '参数配置管理', '1924355073995968512', 20, '/sys/config', 'MENU', 0, null, '', '0',
+        0,
         '2025-05-21 09:03:42.682419', '2025-05-21 09:03:42.682419');
 INSERT INTO shop.resource (id, resource_id, resource_name, parent_resource_id, sort, url, resource_type, visible, perms,
                            icon, tenant_id, deleted_flag, create_time, update_time)
