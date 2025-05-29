@@ -7,8 +7,8 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tech.oldhorse.shop.common.constants.CommonConstants;
-import tech.oldhorse.shop.service.UserService;
-import tech.oldhorse.shop.service.object.model.ResourceModel;
+import tech.oldhorse.shop.service.sys.UserService;
+import tech.oldhorse.shop.service.sys.object.model.ResourceModel;
 
 import java.time.Duration;
 import java.util.ArrayList;
