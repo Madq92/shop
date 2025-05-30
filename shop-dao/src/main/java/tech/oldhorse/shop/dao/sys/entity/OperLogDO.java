@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@TableName("oper_log")
+@TableName("sys_oper_log")
 public class OperLogDO {
 
     /**

@@ -17,7 +17,7 @@ import tech.oldhorse.shop.common.object.BaseEntity;
 @Getter
 @Setter
 @ToString
-@TableName("role")
+@TableName("sys_role")
 public class RoleDO extends BaseEntity {
 
     /**

@@ -18,7 +18,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@TableName("user_role")
+@TableName("sys_user_role")
 public class UserRoleDO {
 
     /**

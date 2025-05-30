@@ -17,7 +17,7 @@ import tech.oldhorse.shop.common.object.BaseEntity;
 @Getter
 @Setter
 @ToString
-@TableName("tenant")
+@TableName("sys_tenant")
 public class TenantDO extends BaseEntity {
 
     /**

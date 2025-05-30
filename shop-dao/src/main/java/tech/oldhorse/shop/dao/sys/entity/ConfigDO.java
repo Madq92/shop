@@ -17,7 +17,7 @@ import tech.oldhorse.shop.common.object.BaseEntity;
 @Getter
 @Setter
 @ToString
-@TableName("config")
+@TableName("sys_config")
 public class ConfigDO extends BaseEntity {
 
     /**

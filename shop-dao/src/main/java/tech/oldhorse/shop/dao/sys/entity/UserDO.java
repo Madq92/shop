@@ -7,6 +7,7 @@ import lombok.ToString;
 import tech.oldhorse.shop.common.object.BaseEntity;
 
 import java.time.LocalDateTime;
+
 /**
  * <p>
  * 用户
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@TableName("user")
+@TableName("sys_user")
 public class UserDO extends BaseEntity {
 
     /**

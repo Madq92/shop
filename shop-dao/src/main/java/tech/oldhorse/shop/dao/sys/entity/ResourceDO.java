@@ -17,7 +17,7 @@ import tech.oldhorse.shop.common.object.BaseEntity;
 @Getter
 @Setter
 @ToString
-@TableName("resource")
+@TableName("sys_resource")
 public class ResourceDO extends BaseEntity {
 
     /**
