@@ -1,0 +1,30 @@
+@startuml
+C->>OMS: 提交订单
+OMS->>WMS: 创建销售订单
+WMS->>Inv: 检查库存
+Inv-->>WMS: 返回库存状态
+alt 库存充足
+    WMS->>Inv: 预占库存
+    WMS->>WMS: 生成出库单
+    WMS->>Task: 创建拣货任务
+    Task->>Task: 执行拣货
+    Task->>Task: 打包复核
+    Task->>Inv: 扣减库存
+    WMS->>TMS: 请求物流服务
+    TMS->>TMS: 选择物流商
+    TMS->>Carrier: 获取运单号
+    Carrier-->>TMS: 返回运单号
+    TMS-->>WMS: 返回物流信息
+    WMS->>Task: 打印面单
+    WMS->>Carrier: 通知揽收
+    Carrier->>Carrier: 运输中
+    Carrier->>C: 配送商品
+    C->>Carrier: 签收商品
+    Carrier->>TMS: 回传签收
+    TMS->>OMS: 通知签收
+    OMS->>C: 订单完成通知
+else 库存不足
+    WMS->>OMS: 返回缺货
+    OMS->>C: 通知延迟发货
+end
+@enduml
