@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import tech.oldhorse.shop.common.context.WebContextHolder;
 
 @Configuration
-@MapperScan("tech.oldhorse.shop.dao.sys.mapper")
+@MapperScan({"tech.oldhorse.shop.dao.sys.mapper", "tech.oldhorse.shop.dao.prod.mapper"})
 public class MybatisPlusConfig {
     private static final String TENANT_TABLE = "tenant";
     private static final String TENANT_ID_COLUMN = "tenant_id";
