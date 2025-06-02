@@ -9,7 +9,7 @@ import tech.oldhorse.shop.dao.prod.entity.SkuDO;
  * </p>
  *
  * @author mika
- * @since 2025-05-30
+ * @since 2025-06-02
  */
 public interface SkuMapper extends BaseMapper<SkuDO> {
 

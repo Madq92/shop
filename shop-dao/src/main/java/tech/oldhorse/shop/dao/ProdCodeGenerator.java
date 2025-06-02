@@ -54,7 +54,7 @@ public class ProdCodeGenerator {
 //                        .enableLombok()
 //                )
                 .strategyConfig(builder -> builder.addTablePrefix("prod_")
-                        .addInclude("prod_category,prod_dict,prod_dict_group,prod_sku,prod_spu,prod_spu_prop")
+                        .addInclude("prod_sku,prod_spu_prop")
                         .entityBuilder().formatFileName("%sDO").disableSerialVersionUID().superClass(BaseEntity.class).addIgnoreColumns("id", "tenant_id", "create_time", "update_time", "deleted_flag")
                         .serviceBuilder().formatServiceFileName("%sRepository").formatServiceImplFileName("%sRepositoryImpl").serviceTemplate("/templates/service.java").serviceImplTemplate("/templates/serviceImpl.java")
                         .controllerBuilder().template("/templates/controller.java")

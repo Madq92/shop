@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class ResourceServiceImpl implements ResourceService {
-    private final static String EXIST_SQL = "SELECT 1 FROM role_resource WHERE role_resource.resource_id = resource.resource_id and role_id IN (%s)";
+    private final static String EXIST_SQL = "SELECT 1 FROM sys_role_resource WHERE sys_role_resource.resource_id = sys_resource.resource_id and role_id IN (%s)";
     @Autowired
     ResourceRepository resourceRepository;
     @Autowired

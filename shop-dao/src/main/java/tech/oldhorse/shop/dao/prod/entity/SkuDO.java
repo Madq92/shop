@@ -12,7 +12,7 @@ import tech.oldhorse.shop.common.object.BaseEntity;
  * </p>
  *
  * @author mika
- * @since 2025-05-30
+ * @since 2025-06-02
  */
 @Getter
 @Setter
@@ -34,26 +34,6 @@ public class SkuDO extends BaseEntity {
      * 编号，方便内部管理
      */
     private String code;
-
-    /**
-     * 规格Id
-     */
-    private String specId;
-
-    /**
-     * 规格1Id
-     */
-    private String specId1;
-
-    /**
-     * 规格2Id
-     */
-    private String specId2;
-
-    /**
-     * 规格3Id
-     */
-    private String specId3;
 
     /**
      * 销售价格

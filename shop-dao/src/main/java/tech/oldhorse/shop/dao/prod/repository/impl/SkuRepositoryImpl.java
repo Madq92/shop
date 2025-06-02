@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author mika
- * @since 2025-05-30
+ * @since 2025-06-02
  */
 @Service
 public class SkuRepositoryImpl extends ServiceImpl<SkuMapper, SkuDO> implements SkuRepository {

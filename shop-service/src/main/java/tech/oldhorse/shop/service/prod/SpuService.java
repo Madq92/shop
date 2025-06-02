@@ -1,7 +1,7 @@
 package tech.oldhorse.shop.service.prod;
 
 import tech.oldhorse.shop.common.object.PageData;
-import tech.oldhorse.shop.service.prod.condition.ProductCondition;
+import tech.oldhorse.shop.service.prod.condition.SpuCondition;
 import tech.oldhorse.shop.service.prod.object.model.SpuModel;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public interface SpuService {
      */
     SpuModel detaile(String spuId);
 
-    PageData<SpuModel> pageByCondition(ProductCondition condition);
+    PageData<SpuModel> pageByCondition(SpuCondition condition);
 
-    List<SpuModel> listByCondition(ProductCondition condition);
+    List<SpuModel> listByCondition(SpuCondition condition);
 }

@@ -5,6 +5,8 @@ import tech.oldhorse.shop.common.object.BaseModel;
 import tech.oldhorse.shop.service.prod.enums.ProdStatusEnum;
 import tech.oldhorse.shop.service.prod.enums.YesOrNoEnum;
 
+import java.util.List;
+
 @Data
 public class SkuModel extends BaseModel {
 
@@ -22,26 +24,6 @@ public class SkuModel extends BaseModel {
      * 编号，方便内部管理
      */
     private String code;
-
-    /**
-     * 规格Id
-     */
-    private String specId;
-
-    /**
-     * 规格1Id
-     */
-    private String specId1;
-
-    /**
-     * 规格2Id
-     */
-    private String specId2;
-
-    /**
-     * 规格3Id
-     */
-    private String specId3;
 
     /**
      * 销售价格
@@ -82,4 +64,9 @@ public class SkuModel extends BaseModel {
      * 状态
      */
     private ProdStatusEnum status;
+
+    /**
+     * 规格
+     */
+    private  List<DictGroupModel> specs;
 }

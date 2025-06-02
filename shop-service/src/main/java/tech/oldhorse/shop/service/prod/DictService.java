@@ -27,6 +27,7 @@ public interface DictService {
 
     DictModel getByDictId(String dictId);
 
+    List<DictModel> listDetailByIds(List<String> dictIds);
 
-    List<SpuModel> listByCondition(DictCondition condition);
+    List<DictGroupModel> listByCondition(DictCondition condition);
 }

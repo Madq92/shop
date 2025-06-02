@@ -37,9 +37,19 @@ public class SpuModel extends BaseModel {
     private String unitId;
 
     /**
+     * 单位Name
+     */
+    private String unitName;
+
+    /**
      * 分类ID
      */
     private String categoryId;
+
+    /**
+     * 分类Name
+     */
+    private String categoryName;
 
     /**
      * 称重商品标识：Y-是,N-否
@@ -65,11 +75,6 @@ public class SpuModel extends BaseModel {
      * 状态
      */
     private ProdStatusEnum status;
-
-    /**
-     * 分类
-     */
-    private CategoryModel category;
 
     /**
      * sku列表

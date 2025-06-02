@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author mika
- * @since 2025-05-30
+ * @since 2025-06-02
  */
 public interface SkuRepository extends IService<SkuDO> {
 

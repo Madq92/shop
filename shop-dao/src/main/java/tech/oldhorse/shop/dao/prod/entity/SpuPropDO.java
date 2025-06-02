@@ -12,7 +12,7 @@ import tech.oldhorse.shop.common.object.BaseEntity;
  * </p>
  *
  * @author mika
- * @since 2025-05-30
+ * @since 2025-06-02
  */
 @Getter
 @Setter
@@ -44,4 +44,9 @@ public class SpuPropDO extends BaseEntity {
      * skuId
      */
     private String skuId;
+
+    /**
+     * 排序值
+     */
+    private Integer sort;
 }
