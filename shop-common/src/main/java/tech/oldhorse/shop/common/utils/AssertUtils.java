@@ -4,6 +4,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import tech.oldhorse.shop.common.exception.BaseParamException;
 
 import java.util.Collection;
+import java.util.Objects;
 
 public class AssertUtils {
     public AssertUtils() {
@@ -33,9 +34,21 @@ public class AssertUtils {
         }
     }
 
+    public static void isEmpty(Collection<?> coll, String msg) {
+        if (CollectionUtils.isNotEmpty(coll)) {
+            throw new BaseParamException(msg);
+        }
+    }
+
     public static void isTrue(boolean expression, String message) {
         if (!expression) {
             throw new BaseParamException(message);
+        }
+    }
+
+    public static void isEquals(Object o1, Object o2, String msg) {
+        if (!Objects.equals(o1, o2)) {
+            throw new BaseParamException(msg);
         }
     }
 

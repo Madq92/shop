@@ -3,7 +3,6 @@ package tech.oldhorse.shop.service.prod;
 import tech.oldhorse.shop.service.prod.condition.DictCondition;
 import tech.oldhorse.shop.service.prod.object.model.DictGroupModel;
 import tech.oldhorse.shop.service.prod.object.model.DictModel;
-import tech.oldhorse.shop.service.prod.object.model.SpuModel;
 
 import java.util.List;
 
@@ -28,6 +27,8 @@ public interface DictService {
     DictModel getByDictId(String dictId);
 
     List<DictModel> listDetailByIds(List<String> dictIds);
+
+    List<DictModel> listDetailByGroupId(String dictGroupId);
 
     List<DictGroupModel> listByCondition(DictCondition condition);
 }

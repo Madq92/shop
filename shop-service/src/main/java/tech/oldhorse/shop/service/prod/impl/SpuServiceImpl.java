@@ -1,5 +1,6 @@
 package tech.oldhorse.shop.service.prod.impl;
 
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import tech.oldhorse.shop.dao.prod.entity.SpuPropDO;
 import tech.oldhorse.shop.dao.prod.repository.SkuRepository;
 import tech.oldhorse.shop.dao.prod.repository.SpuPropRepository;
 import tech.oldhorse.shop.dao.prod.repository.SpuRepository;
+import tech.oldhorse.shop.integration.sequence.wrapper.IdGeneratorWrapper;
 import tech.oldhorse.shop.service.prod.CategoryService;
 import tech.oldhorse.shop.service.prod.DictService;
 import tech.oldhorse.shop.service.prod.SpuService;
@@ -21,10 +23,7 @@ import tech.oldhorse.shop.service.prod.condition.SpuCondition;
 import tech.oldhorse.shop.service.prod.convert.SkuCoreConvert;
 import tech.oldhorse.shop.service.prod.convert.SpuCoreConvert;
 import tech.oldhorse.shop.service.prod.enums.DictTypeEnum;
-import tech.oldhorse.shop.service.prod.object.model.CategoryModel;
-import tech.oldhorse.shop.service.prod.object.model.DictGroupModel;
-import tech.oldhorse.shop.service.prod.object.model.SkuModel;
-import tech.oldhorse.shop.service.prod.object.model.SpuModel;
+import tech.oldhorse.shop.service.prod.object.model.*;
 
 import java.util.List;
 import java.util.Map;
@@ -45,11 +44,40 @@ public class SpuServiceImpl implements SpuService {
     SkuCoreConvert skuCoreConvert;
     @Autowired
     SpuPropRepository spuPropRepository;
-
     @Autowired
     DictService dictService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    IdGeneratorWrapper idGenerator;
+
+    private static List<SpuPropDO> getSpuPropDO(List<DictGroupModel> dictGroupModels, String spuId, String skuId) {
+        List<SpuPropDO> spuPropDOList = Lists.newArrayList();
+        for (int i = 0; i < dictGroupModels.size(); i++) {
+            DictGroupModel dictGroupModel = dictGroupModels.get(i);
+            SpuPropDO spuPropGroupDO = new SpuPropDO();
+            spuPropGroupDO.setDictGroupId(dictGroupModel.getDictGroupId());
+            spuPropGroupDO.setSort(i);
+            spuPropGroupDO.setSpuId(spuId);
+            spuPropGroupDO.setSkuId(skuId);
+            spuPropGroupDO.setDictType(dictGroupModel.getType().name());
+            spuPropDOList.add(spuPropGroupDO);
+
+            List<DictModel> dictDetails = dictGroupModel.getDictDetails();
+            for (int j = 0; j < dictDetails.size(); j++) {
+                DictModel dictModel = dictDetails.get(j);
+                SpuPropDO spuPropDO = new SpuPropDO();
+                spuPropDO.setDictId(dictModel.getDictId());
+                spuPropDO.setDictGroupId(dictGroupModel.getDictGroupId());
+                spuPropDO.setSpuId(spuId);
+                spuPropDO.setSkuId(skuId);
+                spuPropDO.setDictType(dictModel.getType().name());
+                spuPropDO.setSort(j);
+                spuPropDOList.add(spuPropDO);
+            }
+        }
+        return spuPropDOList;
+    }
 
     @Override
     public String create(SpuModel spuModel) {
@@ -58,9 +86,37 @@ public class SpuServiceImpl implements SpuService {
 
 
         // 创建spu
+        SpuDO spuDO = spuCoreConvert.model2Do(spuModel);
+        String spuId = idGenerator.nextStringId();
+        spuDO.setSpuId(spuId);
+        spuRepository.save(spuDO);
+
+        List<SpuPropDO> spuPropDOAllList = Lists.newArrayList();
         // 创建sku
+        List<SkuModel> skuModels = spuModel.getSkus();
+
+        // --sku-spec
+        for (int i = 0; i < skuModels.size(); i++) {
+            SkuModel skuModel = skuModels.get(i);
+            skuModel.setSpuId(spuId);
+            String skuId = idGenerator.nextStringId();
+            skuModel.setSkuId(skuId);
+
+            List<DictGroupModel> specs = skuModel.getSpecs();
+            if (CollectionUtils.isEmpty(specs)) {
+                continue;
+            }
+            List<SpuPropDO> spuPropDOs = getSpuPropDO(specs, spuId, skuId);
+            spuPropDOAllList.addAll(spuPropDOs);
+        }
+        skuRepository.saveBatch(skuCoreConvert.modelList2DoList(skuModels));
+
         // 创建参数关联关系
-        return "";
+        List<DictGroupModel> props = spuModel.getProps();
+        List<SpuPropDO> spuPropDOs = getSpuPropDO(props, spuId, null);
+        spuPropDOAllList.addAll(spuPropDOs);
+        spuPropRepository.saveBatch(spuPropDOAllList);
+        return spuId;
     }
 
     @Override

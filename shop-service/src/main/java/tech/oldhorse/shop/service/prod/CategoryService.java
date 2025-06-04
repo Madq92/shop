@@ -2,7 +2,6 @@ package tech.oldhorse.shop.service.prod;
 
 import tech.oldhorse.shop.service.prod.condition.CategoryCondition;
 import tech.oldhorse.shop.service.prod.object.model.CategoryModel;
-import tech.oldhorse.shop.service.prod.object.model.SpuModel;
 
 import java.util.List;
 
@@ -15,5 +14,5 @@ public interface CategoryService {
 
     CategoryModel getByCategoryId(String categoryId);
 
-    List<SpuModel> listByCondition(CategoryCondition condition);
+    List<CategoryModel> listByCondition(CategoryCondition condition);
 }

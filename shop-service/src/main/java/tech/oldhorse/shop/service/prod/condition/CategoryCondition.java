@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class CategoryCondition {
     private String nameLike;
+    private String parentId;
 }
